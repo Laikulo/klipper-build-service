@@ -1,0 +1,377 @@
+Version: 1
+Revision: 1
+
+040700 0 0 1495569656 lost+found
+.
+040755 0 0 1481410502 bin
+120777 0 0 1495569715 pwd busybox
+120777 0 0 1495569715 hush busybox
+120777 0 0 1495569715 cat busybox
+120777 0 0 1495569715 umount busybox
+120777 0 0 1495569715 rmdir busybox
+120777 0 0 1495569715 printenv busybox
+120777 0 0 1495569715 iptunnel busybox
+120777 0 0 1495569715 reformime busybox
+120777 0 0 1495569715 ipaddr busybox
+100775 1000 1000 808616 1495569998 busybox 2
+120777 0 0 1495569715 fgrep busybox
+120777 0 0 1495569715 sleep busybox
+120777 0 0 1495569715 tar busybox
+120777 0 0 1495569715 netstat busybox
+120777 0 0 1495569715 cpio busybox
+120777 0 0 1495569715 egrep busybox
+120777 0 0 1495569715 addgroup busybox
+120777 0 0 1495569715 mv busybox
+120777 0 0 1495569715 su busybox
+120777 0 0 1495569715 mountpoint busybox
+120777 0 0 1495569715 ip busybox
+120777 0 0 1495569715 usleep busybox
+120777 0 0 1495569715 iproute busybox
+120777 0 0 1495569715 watch busybox
+120777 0 0 1495569715 chmod busybox
+120777 0 0 1495569715 catv busybox
+120777 0 0 1495569715 false busybox
+120777 0 0 1495569715 ionice busybox
+120777 0 0 1495569715 iplink busybox
+120777 0 0 1495569715 powertop busybox
+120777 0 0 1495569715 lzop busybox
+120777 0 0 1495569715 mpstat busybox
+120777 0 0 1495569715 makemime busybox
+120777 0 0 1495569715 scriptreplay busybox
+120777 0 0 1495569715 chattr busybox
+120777 0 0 1495569715 iostat busybox
+120777 0 0 1495569715 delgroup busybox
+120777 0 0 1495569715 more busybox
+120777 0 0 1495569715 nice busybox
+120777 0 0 1495569715 gunzip busybox
+120777 0 0 1495569715 chown busybox
+120777 0 0 1495569715 dmesg busybox
+120777 0 0 1495569715 login busybox
+120777 0 0 1495569715 ipcalc busybox
+120777 0 0 1495569715 mkdir busybox
+120777 0 0 1495569715 lsattr busybox
+120777 0 0 1495569715 rev busybox
+120777 0 0 1495569715 fsync busybox
+120777 0 0 1495569715 ps busybox
+120777 0 0 1495569715 cttyhack busybox
+120777 0 0 1495569715 mount busybox
+120777 0 0 1495569715 ash busybox
+120777 0 0 1495569715 grep busybox
+120777 0 0 1495569715 rm busybox
+120777 0 0 1495569715 hostname busybox
+120777 0 0 1495569715 rpm busybox
+120777 0 0 1495569715 stat busybox
+120777 0 0 1495569715 dumpkmap busybox
+120777 0 0 1495569715 dnsdomainname busybox
+120777 0 0 1495569715 iprule busybox
+120777 0 0 1495569715 run-parts busybox
+120777 0 0 1495569715 zcat busybox
+120777 0 0 1495569715 fdflush busybox
+120777 0 0 1495569715 stty busybox
+120777 0 0 1495569715 ln busybox
+120777 0 0 1495569715 setarch busybox
+120777 0 0 1495569715 mknod busybox
+120777 0 0 1495569715 df busybox
+120777 0 0 1495569715 vi busybox
+120777 0 0 1495569715 kill busybox
+120777 0 0 1495569715 chgrp busybox
+120777 0 0 1495569715 linux64 busybox
+120777 0 0 1495569715 ed busybox
+120777 0 0 1495569715 linux32 busybox
+120777 0 0 1495569715 gzip busybox
+120777 0 0 1495569715 uname busybox
+120777 0 0 1495569715 pipe_progress busybox
+120777 0 0 1495569715 true busybox
+120777 0 0 1495569715 deluser busybox
+120777 0 0 1495569715 sed busybox
+120777 0 0 1495569715 pidof busybox
+120777 0 0 1495569715 getopt busybox
+120777 0 0 1495569715 date busybox
+120777 0 0 1495569715 mktemp busybox
+120777 0 0 1495569715 base64 busybox
+120777 0 0 1495569715 echo busybox
+120777 0 0 1495569715 dd busybox
+120777 0 0 1495569715 sh busybox
+120777 0 0 1495569715 ping busybox
+120777 0 0 1495569715 cp busybox
+120777 0 0 1495569715 adduser busybox
+120777 0 0 1495569715 mt busybox
+120777 0 0 1495569715 sync busybox
+120777 0 0 1495569715 ls busybox
+120777 0 0 1495569715 touch busybox
+.
+040755 0 0 1495569707 dev
+.
+040755 0 0 1495568463 etc
+100644 0 0 216 1495568459 fstab 3
+100644 0 0 562 1305401078 passwd 4
+100644 0 0 215 1305401074 group 5
+.
+040755 0 0 1495570107 lib
+120777 0 0 1495570031 ld-linux-riscv64-lp64d.so.1 ld-2.24.90.so
+120777 0 0 1495570038 libc.so.6 libc-2.24.90.so
+120777 0 0 1495570044 libm.so.6 libm-2.24.90.so
+100755 1000 1000 100048 1495570090 ld-2.24.90.so 6
+100755 1000 1000 1055144 1495570086 libc-2.24.90.so 7
+100755 1000 1000 600872 1495570093 libm-2.24.90.so 8
+.
+040755 0 0 1481409883 proc
+.
+040755 0 0 1495569423 root
+.
+040755 0 0 1495569413 sbin
+120777 0 0 1495569715 modinfo ../bin/busybox
+120777 0 0 1495569715 blockdev ../bin/busybox
+120777 0 0 1495569715 insmod ../bin/busybox
+120777 0 0 1495569715 mdev ../bin/busybox
+120777 0 0 1495569715 ifenslave ../bin/busybox
+120777 0 0 1495569715 getty ../bin/busybox
+120777 0 0 1495569715 fbsplash ../bin/busybox
+120777 0 0 1495569715 poweroff ../bin/busybox
+120777 0 0 1495569715 modprobe ../bin/busybox
+120777 0 0 1495569715 switch_root ../bin/busybox
+120777 0 0 1495569715 slattach ../bin/busybox
+120777 0 0 1495569715 sysctl ../bin/busybox
+120777 0 0 1495569715 raidautorun ../bin/busybox
+120777 0 0 1495569715 man ../bin/busybox
+120777 0 0 1495569715 ifup ../bin/busybox
+120777 0 0 1495569715 rmmod ../bin/busybox
+120777 0 0 1495569715 udhcpc ../bin/busybox
+120777 0 0 1495569715 watchdog ../bin/busybox
+120777 0 0 1495569715 makedevs ../bin/busybox
+120777 0 0 1495569715 swapoff ../bin/busybox
+120777 0 0 1495569715 freeramdisk ../bin/busybox
+120777 0 0 1495569715 vconfig ../bin/busybox
+120777 0 0 1495569715 mkdosfs ../bin/busybox
+120777 0 0 1495569715 swapon ../bin/busybox
+120777 0 0 1495569715 ifconfig ../bin/busybox
+120777 0 0 1495569715 nameif ../bin/busybox
+120777 0 0 1495569715 fsck.minix ../bin/busybox
+120777 0 0 1495569715 findfs ../bin/busybox
+120777 0 0 1495569715 mkfs.minix ../bin/busybox
+120777 0 0 1495569715 depmod ../bin/busybox
+120777 0 0 1495569715 tunctl ../bin/busybox
+120777 0 0 1495569715 zcip ../bin/busybox
+120777 0 0 1495569715 mkswap ../bin/busybox
+120777 0 0 1495569715 hwclock ../bin/busybox
+120777 0 0 1495569715 start-stop-daemon ../bin/busybox
+120777 0 0 1495569715 mkfs.ext2 ../bin/busybox
+120777 0 0 1495569715 hdparm ../bin/busybox
+120777 0 0 1495569715 bootchartd ../bin/busybox
+120777 0 0 1495569715 arp ../bin/busybox
+120777 0 0 1495569715 fdisk ../bin/busybox
+120777 0 0 1495569715 adjtimex ../bin/busybox
+120777 0 0 1495569715 sulogin ../bin/busybox
+120777 0 0 1495569715 route ../bin/busybox
+120777 0 0 1495569715 lsmod ../bin/busybox
+120777 0 0 1495569715 klogd ../bin/busybox
+120777 0 0 1495569715 mkfs.vfat ../bin/busybox
+120777 0 0 1495569715 pivot_root ../bin/busybox
+120777 0 0 1495569715 acpid ../bin/busybox
+120777 0 0 1495569715 logread ../bin/busybox
+120777 0 0 1495569715 mke2fs ../bin/busybox
+120777 0 0 1495569715 runlevel ../bin/busybox
+120777 0 0 1495569715 fsck ../bin/busybox
+120777 0 0 1495569715 blkid ../bin/busybox
+120777 0 0 1495569715 reboot ../bin/busybox
+120777 0 0 1495569715 setconsole ../bin/busybox
+120777 0 0 1495569715 syslogd ../bin/busybox
+120777 0 0 1495569715 loadkmap ../bin/busybox
+120777 0 0 1495569715 losetup ../bin/busybox
+120777 0 0 1495569715 ifdown ../bin/busybox
+120777 0 0 1495569715 devmem ../bin/busybox
+120777 0 0 1495569715 halt ../bin/busybox
+100755 0 0 229 1495569409 init 9
+.
+040755 0 0 1481409883 sys
+.
+041777 0 0 1495568497 tmp
+.
+040755 0 0 1481409883 usr
+040755 0 0 1481409883 lib
+.
+040755 0 0 1481410977 bin
+120777 0 0 1495569715 timeout ../../bin/busybox
+120777 0 0 1495569715 openvt ../../bin/busybox
+120777 0 0 1495569715 tac ../../bin/busybox
+120777 0 0 1495569715 unzip ../../bin/busybox
+120777 0 0 1495569715 cut ../../bin/busybox
+120777 0 0 1495569715 yes ../../bin/busybox
+120777 0 0 1495569715 telnet ../../bin/busybox
+120777 0 0 1495569715 reset ../../bin/busybox
+120777 0 0 1495569715 xargs ../../bin/busybox
+120777 0 0 1495569715 wall ../../bin/busybox
+120777 0 0 1495569715 tee ../../bin/busybox
+120777 0 0 1495569715 free ../../bin/busybox
+120777 0 0 1495569715 ifplugd ../../bin/busybox
+120777 0 0 1495569715 last ../../bin/busybox
+120777 0 0 1495569715 lpr ../../bin/busybox
+120777 0 0 1495569715 deallocvt ../../bin/busybox
+120777 0 0 1495569715 add-shell ../../bin/busybox
+120777 0 0 1495569715 split ../../bin/busybox
+120777 0 0 1495569715 logname ../../bin/busybox
+120777 0 0 1495569715 dc ../../bin/busybox
+120777 0 0 1495569715 volname ../../bin/busybox
+120777 0 0 1495569715 sort ../../bin/busybox
+120777 0 0 1495569715 cksum ../../bin/busybox
+120777 0 0 1495569715 eject ../../bin/busybox
+120777 0 0 1495569715 lsusb ../../bin/busybox
+120777 0 0 1495569715 udpsvd ../../bin/busybox
+120777 0 0 1495569715 uudecode ../../bin/busybox
+120777 0 0 1495569715 kbd_mode ../../bin/busybox
+120777 0 0 1495569715 hostid ../../bin/busybox
+120777 0 0 1495569715 bzip2 ../../bin/busybox
+120777 0 0 1495569715 remove-shell ../../bin/busybox
+120777 0 0 1495569715 pmap ../../bin/busybox
+120777 0 0 1495569715 [[ ../../bin/busybox
+120777 0 0 1495569715 chrt ../../bin/busybox
+120777 0 0 1495569715 awk ../../bin/busybox
+120777 0 0 1495569715 microcom ../../bin/busybox
+120777 0 0 1495569715 sv ../../bin/busybox
+120777 0 0 1495569715 pkill ../../bin/busybox
+120777 0 0 1495569715 killall5 ../../bin/busybox
+120777 0 0 1495569715 tail ../../bin/busybox
+120777 0 0 1495569715 lpq ../../bin/busybox
+120777 0 0 1495569715 uptime ../../bin/busybox
+120777 0 0 1495569715 tty ../../bin/busybox
+120777 0 0 1495569715 nohup ../../bin/busybox
+120777 0 0 1495569715 runsvdir ../../bin/busybox
+120777 0 0 1495569715 beep ../../bin/busybox
+120777 0 0 1495569715 ipcrm ../../bin/busybox
+120777 0 0 1495569715 ftpput ../../bin/busybox
+120777 0 0 1495569715 fold ../../bin/busybox
+120777 0 0 1495569715 bzcat ../../bin/busybox
+120777 0 0 1495569715 showkey ../../bin/busybox
+120777 0 0 1495569715 dirname ../../bin/busybox
+120777 0 0 1495569715 wc ../../bin/busybox
+120777 0 0 1495569715 unix2dos ../../bin/busybox
+120777 0 0 1495569715 head ../../bin/busybox
+120777 0 0 1495569715 install ../../bin/busybox
+120777 0 0 1495569715 lzcat ../../bin/busybox
+120777 0 0 1495569715 tr ../../bin/busybox
+120777 0 0 1495569715 crontab ../../bin/busybox
+120777 0 0 1495569715 resize ../../bin/busybox
+120777 0 0 1495569715 ftpget ../../bin/busybox
+120777 0 0 1495569715 sha512sum ../../bin/busybox
+120777 0 0 1495569715 setsid ../../bin/busybox
+120777 0 0 1495569715 less ../../bin/busybox
+120777 0 0 1495569715 length ../../bin/busybox
+120777 0 0 1495569715 find ../../bin/busybox
+120777 0 0 1495569715 rpm2cpio ../../bin/busybox
+120777 0 0 1495569715 dos2unix ../../bin/busybox
+120777 0 0 1495569715 renice ../../bin/busybox
+120777 0 0 1495569715 lspci ../../bin/busybox
+120777 0 0 1495569715 lzopcat ../../bin/busybox
+120777 0 0 1495569715 tftpd ../../bin/busybox
+120777 0 0 1495569715 cryptpw ../../bin/busybox
+120777 0 0 1495569715 uuencode ../../bin/busybox
+120777 0 0 1495569715 envdir ../../bin/busybox
+120777 0 0 1495569715 nc ../../bin/busybox
+120777 0 0 1495569715 time ../../bin/busybox
+120777 0 0 1495569715 uniq ../../bin/busybox
+120777 0 0 1495569715 clear ../../bin/busybox
+120777 0 0 1495569715 setuidgid ../../bin/busybox
+120777 0 0 1495569715 id ../../bin/busybox
+120777 0 0 1495569715 env ../../bin/busybox
+120777 0 0 1495569715 rx ../../bin/busybox
+120777 0 0 1495569715 sha1sum ../../bin/busybox
+120777 0 0 1495569715 chat ../../bin/busybox
+120777 0 0 1495569715 unlzop ../../bin/busybox
+120777 0 0 1495569715 script ../../bin/busybox
+120777 0 0 1495569715 traceroute ../../bin/busybox
+120777 0 0 1495569715 xzcat ../../bin/busybox
+120777 0 0 1495569715 realpath ../../bin/busybox
+120777 0 0 1495569715 who ../../bin/busybox
+120777 0 0 1495569715 xz ../../bin/busybox
+120777 0 0 1495569715 chvt ../../bin/busybox
+120777 0 0 1495569715 md5sum ../../bin/busybox
+120777 0 0 1495569715 test ../../bin/busybox
+120777 0 0 1495569715 basename ../../bin/busybox
+120777 0 0 1495569715 fuser ../../bin/busybox
+120777 0 0 1495569715 tftp ../../bin/busybox
+120777 0 0 1495569715 [ ../../bin/busybox
+120777 0 0 1495569715 flock ../../bin/busybox
+120777 0 0 1495569715 sha256sum ../../bin/busybox
+120777 0 0 1495569715 vlock ../../bin/busybox
+120777 0 0 1495569715 softlimit ../../bin/busybox
+120777 0 0 1495569715 top ../../bin/busybox
+120777 0 0 1495569715 sum ../../bin/busybox
+120777 0 0 1495569715 cmp ../../bin/busybox
+120777 0 0 1495569715 ipcs ../../bin/busybox
+120777 0 0 1495569715 passwd ../../bin/busybox
+120777 0 0 1495569715 seq ../../bin/busybox
+120777 0 0 1495569715 unexpand ../../bin/busybox
+120777 0 0 1495569715 od ../../bin/busybox
+120777 0 0 1495569715 smemcap ../../bin/busybox
+120777 0 0 1495569715 unxz ../../bin/busybox
+120777 0 0 1495569715 tcpsvd ../../bin/busybox
+120777 0 0 1495569715 readlink ../../bin/busybox
+120777 0 0 1495569715 mkfifo ../../bin/busybox
+120777 0 0 1495569715 hd ../../bin/busybox
+120777 0 0 1495569715 mkpasswd ../../bin/busybox
+120777 0 0 1495569715 expand ../../bin/busybox
+120777 0 0 1495569715 unlzma ../../bin/busybox
+120777 0 0 1495569715 dumpleases ../../bin/busybox
+120777 0 0 1495569715 printf ../../bin/busybox
+120777 0 0 1495569715 nmeter ../../bin/busybox
+120777 0 0 1495569715 patch ../../bin/busybox
+120777 0 0 1495569715 fdformat ../../bin/busybox
+120777 0 0 1495569715 whoami ../../bin/busybox
+120777 0 0 1495569715 which ../../bin/busybox
+120777 0 0 1495569715 logger ../../bin/busybox
+120777 0 0 1495569715 cal ../../bin/busybox
+120777 0 0 1495569715 chpst ../../bin/busybox
+120777 0 0 1495569715 runsv ../../bin/busybox
+120777 0 0 1495569715 comm ../../bin/busybox
+120777 0 0 1495569715 envuidgid ../../bin/busybox
+120777 0 0 1495569715 nslookup ../../bin/busybox
+120777 0 0 1495569715 hexdump ../../bin/busybox
+120777 0 0 1495569715 ttysize ../../bin/busybox
+120777 0 0 1495569715 bunzip2 ../../bin/busybox
+120777 0 0 1495569715 rtcwake ../../bin/busybox
+120777 0 0 1495569715 diff ../../bin/busybox
+120777 0 0 1495569715 du ../../bin/busybox
+120777 0 0 1495569715 mesg ../../bin/busybox
+120777 0 0 1495569715 pscan ../../bin/busybox
+120777 0 0 1495569715 fgconsole ../../bin/busybox
+120777 0 0 1495569715 lzma ../../bin/busybox
+120777 0 0 1495569715 setkeycodes ../../bin/busybox
+120777 0 0 1495569715 killall ../../bin/busybox
+120777 0 0 1495569715 pgrep ../../bin/busybox
+120777 0 0 1495569715 arping ../../bin/busybox
+120777 0 0 1495569715 wget ../../bin/busybox
+120777 0 0 1495569715 ether-wake ../../bin/busybox
+.
+040755 0 0 1481410994 sbin
+120777 0 0 1495569715 httpd ../../bin/busybox
+120777 0 0 1495569715 telnetd ../../bin/busybox
+120777 0 0 1495569715 fakeidentd ../../bin/busybox
+120777 0 0 1495569715 loadfont ../../bin/busybox
+120777 0 0 1495569715 inetd ../../bin/busybox
+120777 0 0 1495569715 setfont ../../bin/busybox
+120777 0 0 1495569715 svlogd ../../bin/busybox
+120777 0 0 1495569715 sendmail ../../bin/busybox
+120777 0 0 1495569715 nbd-client ../../bin/busybox
+120777 0 0 1495569715 fbset ../../bin/busybox
+120777 0 0 1495569715 chpasswd ../../bin/busybox
+120777 0 0 1495569715 lpd ../../bin/busybox
+120777 0 0 1495569715 crond ../../bin/busybox
+120777 0 0 1495569715 popmaildir ../../bin/busybox
+120777 0 0 1495569715 brctl ../../bin/busybox
+120777 0 0 1495569715 dnsd ../../bin/busybox
+120777 0 0 1495569715 udhcpd ../../bin/busybox
+120777 0 0 1495569715 rdate ../../bin/busybox
+120777 0 0 1495569715 dhcprelay ../../bin/busybox
+120777 0 0 1495569715 setlogcons ../../bin/busybox
+120777 0 0 1495569715 readprofile ../../bin/busybox
+120777 0 0 1495569715 chroot ../../bin/busybox
+120777 0 0 1495569715 rdev ../../bin/busybox
+120777 0 0 1495569715 ntpd ../../bin/busybox
+120777 0 0 1495569715 ftpd ../../bin/busybox
+.
+.
+040755 0 0 1481410533 var
+.
+040755 0 0 1501684304 mnt
+.
+.

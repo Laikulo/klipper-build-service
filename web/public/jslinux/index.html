@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<style>
+#terminal_target {
+border: 1px blue solid;
+width: 800px;
+height: auto;
+display: block;
+}
+</style>
+<body>
+<div id="terminal_target">
+</div>
+<button id="do_the_thing">Do The Thing</button>
+<link rel="stylesheet" href="../xterm/css/xterm.css"/>
+<script src="../xterm/lib/xterm.js"></script>
+<script src="term.js"></script>
+<script src="jslinux-core.js"></script>
+<script language="JavaScript">
+
+    function doTheThing() {
+        const filename = "take1.tar"
+        const test_tar_path = "../kconfig_bundles/take1.tar"
+        fetch(test_tar_path).then( (response) => {
+            console.log(response)
+            response.arrayBuffer().then( (buf) => {
+                let tar_buf = new Uint8Array(buf)
+                let tar_buf_len = tar_buf.length
+                let tar_buf_addr = _malloc(tar_buf_len)
+                console.log("Importing " + tar_buf_len + "b into" + filename)
+                HEAPU8.set(tar_buf, tar_buf_addr)
+                fs_import_file(filename, tar_buf_addr, tar_buf_len)
+                console.log('Done')
+            })
+        }).catch((reason) => console.log(reason))
+    }
+
+    let setupTerm = (cols, rows, handler) => {
+        let terminal = new window.Terminal({
+            cols: cols,
+            rows: rows,
+            cursorBlink: true
+        })
+        terminal.onData(handler)
+        terminal.open(document.getElementById('terminal_target'))
+        window.vm_terminal = terminal
+        window.vm_input = handler
+        return {
+            write: (x) => {terminal.write(x)},
+            writeln: (x) => {terminal.writeln(x)},
+            getSize: () => { return [cols, rows] }
+        }
+    }
+
+    start_vm(null, null, setupTerm)
+
+    document.getElementById('do_the_thing').onclick = doTheThing
+
+
+</script>
+</body>
+</html>
