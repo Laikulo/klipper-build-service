@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -e -o pipefail
+
+rev_info_tool="$(dirname "$0")/rev-info"
+
+klipper_tree="${1:-$PWD}"
+
+
+export GIT_WORK_TREE="$klipper_tree" GIT_DIR="$klipper_tree/.git"
+for rev in $(git rev-list --reverse 'v0.10.0^..origin/HEAD'); do
+    git reset --hard "$rev" -q
+    "$rev_info_tool" "$klipper_tree"
+done

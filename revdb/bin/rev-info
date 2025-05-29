@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -e -o pipefail
+
+kconfig_hash_tool="$(dirname "$0")/kconfig-hash"
+
+klipper_tree="${1:-$PWD}"
+
+read -r klipper_git_sha < <(GIT_WORK_TREE="$klipper_tree" GIT_DIR="$klipper_tree/.git" git rev-parse HEAD)
+read -r klipper_git_desc < <(GIT_WORK_TREE="$klipper_tree" GIT_DIR="$klipper_tree/.git" git describe --always --tags --dirty)
+read -r kconfig_hash < <("$kconfig_hash_tool" "$klipper_tree")
+
+printf "%s,%s,%s\n" "$klipper_git_sha" "$klipper_git_desc" "$kconfig_hash"

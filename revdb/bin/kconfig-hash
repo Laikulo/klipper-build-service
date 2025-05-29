@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -e -o pipefail
+
+if [[ $1 == "-h" ]]; then
+  cat >&2 <<-.
+		$0 [-h | KLIPPER_PATH]
+		print a repeatable hash of all kconfigs in a klipper source klipper_tree
+
+		-h - Print this help and exit
+		KLIPPER_PATH -  The root of a klipper checkout to generate the hash from, defaults to the current directory
+
+		requires: tar, sha256sum, cut, and bash 2.4+
+	.
+	exit 0
+fi
+
+klipper_tree="${1:-$PWD}"
+
+pushd "$klipper_tree" 1>/dev/null
+
+typeset -a kconfigs
+mapfile -t kconfigs < <(find src -iname Kconfig)
+
+tar -c --sort=name --owner=root:0 --group=root:0 --mtime="UTC 1970-01-01" "${kconfigs[@]}" | sha256sum | cut -f1 -d' '
+
+popd 1>/dev/null
