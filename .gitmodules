@@ -1,0 +1,5 @@
+[submodule "menuconfig_vm/rootfs/simple/buildroot"]
+	path = menuconfig_vm/rootfs/simple/buildroot
+	url = https://gitlab.com/buildroot.org/buildroot.git
+	branch = 2025.02.x
+        depth = 1
