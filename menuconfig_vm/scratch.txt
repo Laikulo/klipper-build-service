@@ -1,0 +1,82 @@
+Minimum non zipped
+|-- encodings
+|   |-- __init__.pyc
+|   |-- aliases.pyc
+|   `-- utf_8.pyc
+\-- os.pyc
+
+|-- encodings
+|   |-- __init__.pyc
+|   |-- aliases.pyc
+|   `-- utf_8.pyc
+`-- os.pyc
+  880  2025-05-30 00:19:54 cd image-root/usr/lib
+  881  2025-05-30 00:19:55 ls
+  882  2025-05-30 00:20:03 mv python3.12{,-stock}
+  883  2025-05-30 00:20:11 mkdir python3.12
+  884  2025-05-30 00:20:34 mv python3.12-stock/os.pyc python3.12
+  885  2025-05-30 00:20:42 mkdir python3.12/encodings
+  886  2025-05-30 00:21:21 mv python3.12-stock/encodings/{__init__,aliases,utf_8}.pyc python3.12/encodings
+  887  2025-05-30 00:21:21 ls
+  888  2025-05-30 00:22:12 cd python3.12-stock/
+  889  2025-05-30 00:22:20 zip ../python312.zip *
+  890  2025-05-30 00:22:21 cd ..
+  891  2025-05-30 00:22:21 ls
+  892  2025-05-30 00:22:25 history
+
+  python3.12
+|-- encodings
+|   |-- __init__.pyc
+|   |-- aliases.pyc
+|   `-- utf_8.pyc
+|-- lib-dynload
+|   |-- _asyncio.cpython-312-riscv64-linux-gnu.so
+|   |-- _bisect.cpython-312-riscv64-linux-gnu.so
+|   |-- _blake2.cpython-312-riscv64-linux-gnu.so
+|   |-- _contextvars.cpython-312-riscv64-linux-gnu.so
+|   |-- _crypt.cpython-312-riscv64-linux-gnu.so
+|   |-- _csv.cpython-312-riscv64-linux-gnu.so
+|   |-- _ctypes.cpython-312-riscv64-linux-gnu.so
+|   |-- _curses.cpython-312-riscv64-linux-gnu.so
+|   |-- _curses_panel.cpython-312-riscv64-linux-gnu.so
+|   |-- _datetime.cpython-312-riscv64-linux-gnu.so
+|   |-- _elementtree.cpython-312-riscv64-linux-gnu.so
+|   |-- _heapq.cpython-312-riscv64-linux-gnu.so
+|   |-- _json.cpython-312-riscv64-linux-gnu.so
+|   |-- _lsprof.cpython-312-riscv64-linux-gnu.so
+|   |-- _md5.cpython-312-riscv64-linux-gnu.so
+|   |-- _multibytecodec.cpython-312-riscv64-linux-gnu.so
+|   |-- _multiprocessing.cpython-312-riscv64-linux-gnu.so
+|   |-- _opcode.cpython-312-riscv64-linux-gnu.so
+|   |-- _pickle.cpython-312-riscv64-linux-gnu.so
+|   |-- _posixshmem.cpython-312-riscv64-linux-gnu.so
+|   |-- _posixsubprocess.cpython-312-riscv64-linux-gnu.so
+|   |-- _queue.cpython-312-riscv64-linux-gnu.so
+|   |-- _random.cpython-312-riscv64-linux-gnu.so
+|   |-- _sha1.cpython-312-riscv64-linux-gnu.so
+|   |-- _sha2.cpython-312-riscv64-linux-gnu.so
+|   |-- _sha3.cpython-312-riscv64-linux-gnu.so
+|   |-- _socket.cpython-312-riscv64-linux-gnu.so
+|   |-- _statistics.cpython-312-riscv64-linux-gnu.so
+|   |-- _struct.cpython-312-riscv64-linux-gnu.so
+|   |-- _xxinterpchannels.cpython-312-riscv64-linux-gnu.so
+|   |-- _xxsubinterpreters.cpython-312-riscv64-linux-gnu.so
+|   |-- _zoneinfo.cpython-312-riscv64-linux-gnu.so
+|   |-- array.cpython-312-riscv64-linux-gnu.so
+|   |-- audioop.cpython-312-riscv64-linux-gnu.so
+|   |-- binascii.cpython-312-riscv64-linux-gnu.so
+|   |-- cmath.cpython-312-riscv64-linux-gnu.so
+|   |-- fcntl.cpython-312-riscv64-linux-gnu.so
+|   |-- grp.cpython-312-riscv64-linux-gnu.so
+|   |-- math.cpython-312-riscv64-linux-gnu.so
+|   |-- mmap.cpython-312-riscv64-linux-gnu.so
+|   |-- resource.cpython-312-riscv64-linux-gnu.so
+|   |-- select.cpython-312-riscv64-linux-gnu.so
+|   |-- spwd.cpython-312-riscv64-linux-gnu.so
+|   |-- syslog.cpython-312-riscv64-linux-gnu.so
+|   |-- termios.cpython-312-riscv64-linux-gnu.so
+|   |-- unicodedata.cpython-312-riscv64-linux-gnu.so
+|   |-- xxlimited.cpython-312-riscv64-linux-gnu.so
+|   |-- xxlimited_35.cpython-312-riscv64-linux-gnu.so
+|   `-- zlib.cpython-312-riscv64-linux-gnu.so
+`-- os.pyc
