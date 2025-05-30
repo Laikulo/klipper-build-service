@@ -24,6 +24,8 @@ null::sysinit:/bin/ln -sf /proc/self/fd/0 /dev/stdin
 null::sysinit:/bin/ln -sf /proc/self/fd/1 /dev/stdout
 null::sysinit:/bin/ln -sf /proc/self/fd/2 /dev/stderr
 ::sysinit:/bin/hostname -F /etc/hostname
+::sysinit:/bin/chgrp fscmd /.fscmd
+::sysinit:/bin/chmod 0660 /.fscmd
 ::sysinit:/sbin/fscmd set_import_dir /media/inbox
 # now run any rc scripts
 ::sysinit:/etc/init.d/rcS
