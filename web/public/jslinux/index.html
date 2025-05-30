@@ -26,7 +26,7 @@ display: block;
                 let tar_buf = new Uint8Array(buf)
                 let tar_buf_len = tar_buf.length
                 let tar_buf_addr = _malloc(tar_buf_len)
-                console.log("Importing " + tar_buf_len + "b into" + filename)
+                console.log("Importing " + tar_buf_len + "b into " + filename)
                 HEAPU8.set(tar_buf, tar_buf_addr)
                 fs_import_file(filename, tar_buf_addr, tar_buf_len)
                 console.log('Done')
