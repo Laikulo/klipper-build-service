@@ -5,6 +5,8 @@ Use cases:
   * Linux wasm with python and libkconfig
     * We do this on the browser to minimize latency when interacting with ncurses.
     * Maybe a minimal tinyemu environment. Gotta figure out how to pass out/back.
+      * When root is virtio-9p, then fs_import_file will drop a file into /tmp
+      * There's something that the guest can do (tbd) to call fs_export_file
     * Would prefer to native-compile something linux-compat
     * Client JS can handle server interaction
       * Server provides base FS and klipper sourcetree.
