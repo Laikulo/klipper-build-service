@@ -1,8 +1,8 @@
 #!/bin/hush
 read -r kcmd </proc/cmdline
 if [[ $kcmd != "${kcmd/autokconfig}" ]]; then
-	echo >&2 "WIP. This is coming soon"
-	read -r foobar
+	echo >&2 " - Starting KBS menuconfig engine..."
+	exec /bin/kbs_menuconfig
 else
 	exec hush -l
 fi

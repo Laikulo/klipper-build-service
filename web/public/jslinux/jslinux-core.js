@@ -463,7 +463,7 @@ Ethernet.prototype.recv_packet = function(buf)
     }
 }
 
-function start_vm(user, pwd, terminalFn)
+function start_vm(user, pwd, terminalFn, vmParams)
 {
     var url, mem_size, cpu, params, vm_url, cmdline, cols, rows, guest_url;
     var font_size, graphic_enable, width, height, net_url, alloc_size;
@@ -511,7 +511,7 @@ function start_vm(user, pwd, terminalFn)
 
     /* read the parameters */
 
-    params = get_params();
+    params = vmParams
     cpu = params["cpu"] || "riscv64";
     url = params["url"];
     if (!url) {
@@ -548,7 +548,7 @@ function start_vm(user, pwd, terminalFn)
         height = 0;
         /* start the terminal */
         term = terminalFn(cols, rows, term_handler)
-        term.write("Loading...\r\n");
+        term.write(" - Setting up workspace...\r\n");
     }
 
 //    console.log("cpu=" + cpu + " url=" + url + " mem=" + mem_size);
@@ -567,6 +567,10 @@ function start_vm(user, pwd, terminalFn)
     default:
         term.writeln("Unknown cpu=" + cpu);
         return;
+    }
+
+    if (vmParams.hasOwnProperty('scriptBase')) {
+        vm_file = vmParams['scriptBase'] + vm_file
     }
 
     if (typeof WebAssembly === "object") {

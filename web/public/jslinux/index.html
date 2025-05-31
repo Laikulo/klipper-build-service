@@ -11,47 +11,72 @@ display: block;
 <body>
 <div id="terminal_target">
 </div>
-<button id="do_the_thing">Do The Thing</button>
+<form onsubmit="doTheThing(this)">
+    <label for="kconfig_bundle">kconfig bundle</label>
+    <input id="kconfig_bundle" value="take1" required></input>
+    <br>
+    <label for="starting_config">starting config</label>
+    <input type="file" id="starting_config"></input>
+    <br>
+    <button type="submit" id="do_the_thing">do the thing</button>
+</form>
+<button onclick="send_chars_to_vm('\x06')">BEL</button>
 <link rel="stylesheet" href="../xterm/css/xterm.css"/>
 <script src="../xterm/lib/xterm.js"></script>
 <script src="jslinux-core.js"></script>
 <script language="JavaScript">
 
-    function doTheThing() {
-        const filename = window.prompt()
-        const test_tar_path = "../kconfig_bundles/" + filename
-        fetch(test_tar_path).then( (response) => {
-            console.log(response)
-            response.arrayBuffer().then( (buf) => {
-                let tar_buf = new Uint8Array(buf)
-                let tar_buf_len = tar_buf.length
-                let tar_buf_addr = _malloc(tar_buf_len)
-                console.log("Importing " + tar_buf_len + "b into " + filename)
-                HEAPU8.set(tar_buf, tar_buf_addr)
-                fs_import_file(filename, tar_buf_addr, tar_buf_len)
-                console.log('Done')
+    function dothething(form) {
+        const kconfig_tar_path = "../kconfig_bundles/" + document.getelementbyid("kconfig_bundle").value + '.tar'
+        const starting_conf = document.getelementbyid('starting_config')
+        if (starting_conf.value) {
+            conf_reader = new filereadersync()
+            conf_reader.onload = (_) => {
+                send_file_to_vm('klipper.config', conf_reader.result)
+            }
+            conf_reader.readasarraybuffer(starting_conf.files[0])
+        }
+        fetch(kconfig_tar_path).then( (response) => {
+            response.arraybuffer().then( (buf) => {
+                send_file_to_vm('kconfig.tar', buf)
+                send_chars_to_vm('\x06')
             })
         }).catch((reason) => console.log(reason))
+        return false
+    }
+
+    function send_file_to_vm(path, data_in) {
+        let buf = new uint8array(data_in)
+        let buf_len = buf.length
+        let buf_addr = _malloc(buf_len)
+        console.log("importing " + buf_len + "b into " + path)
+        heapu8.set(buf, buf_addr)
+        fs_import_file(path, buf_addr, buf_len)
+        console.log('done')
+    }
+
+    function send_chars_to_vm(chars) {
+        window.term_handler(chars)
     }
 
     let setupTerm = (cols, rows, handler) => {
         let terminal = new window.Terminal({
             cols: cols,
             rows: rows,
-            cursorBlink: true
+            cursorblink: true
         })
-        terminal.onData(handler)
-        terminal.open(document.getElementById('terminal_target'))
+        terminal.ondata(handler)
+        terminal.open(document.getelementbyid('terminal_target'))
         window.vm_terminal = terminal
         window.vm_input = handler
         return {
             write: (x) => {terminal.write(x)},
             writeln: (x) => {terminal.writeln(x)},
-            getSize: () => { return [cols, rows] }
+            getsize: () => { return [cols, rows] }
         }
     }
 
-    start_vm(null, null, setupTerm)
+    start_vm(null, null, setupterm)
 
     document.getElementById('do_the_thing').onclick = doTheThing
 

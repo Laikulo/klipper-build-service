@@ -2,8 +2,34 @@
 <html lang="en">
 <head>
     <title>kConfig - Klipper Build Service</title>
+    <style>
+        #terminal {
+            border: 1px blue solid;
+            width: 700px;
+            height: auto;
+            display: block;
+        }
+    </style>
 </head>
-<body>
-<p>This tool makes use of <a href="https://bellard.org/tinyemu">JSLinux</a></p>
+<body onload="kbs_init()">
+<div id="terminal"></div>
+<form onsubmit="start_kconfig(this)">
+    <label for="kconfig_bundle">kconfig bundle</label>
+    <input id="kconfig_bundle" value="take1" required></input>
+    <br>
+    <label for="starting_config">starting config</label>
+    <input type="file" id="starting_config"></input>
+    <br>
+    <button type="submit" id="do_the_thing" disabled>do the thing</button>
+</form>
+<p>
+    This tool makes use of
+    <a href="https://bellard.org/tinyemu">JSLinux</a>,
+    <a href="https://xtermjs.org/">xterm.js</a>.
+</p>
+<link rel="stylesheet" href="xterm/css/xterm.css">
+<script src="xterm/lib/xterm.js"></script>
+<script src="jslinux/jslinux-core.js"></script>
+<script src="kbs_menuconfig.js"></script>
 </body>
 </html>

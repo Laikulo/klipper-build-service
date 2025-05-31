@@ -1,6 +1,7 @@
 #!/bin/hush
 read -r kcmd </proc/cmdline
 if [[ $kcmd != "${kcmd/autologin}" ]]; then
+	echo >&2 " - Workspace ready"
   exec login -f klipper "$@"
 else
   exec login "$@"
