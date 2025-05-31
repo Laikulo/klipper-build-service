@@ -80,3 +80,15 @@ Minimum non zipped
 |   |-- xxlimited_35.cpython-312-riscv64-linux-gnu.so
 |   `-- zlib.cpython-312-riscv64-linux-gnu.so
 `-- os.pyc
+
+
+
+{
+cd image-root/usr/lib
+mv python3.12{,-stock}
+mkdir python3.12
+mv python3.12-stock/{os.pyc,encodings,lib-dynload} python3.12
+mkdir python3.12/encodings
+cd python3.12-stock
+zip -r ../python312.zip *
+}

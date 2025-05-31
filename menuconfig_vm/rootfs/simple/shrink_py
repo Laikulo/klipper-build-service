@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -ex
+
+cd image-root/usr/lib
+mv python3.12{,-stock}
+mkdir python3.12
+mv python3.12-stock/{os.pyc,encodings,lib-dynload} python3.12
+cd python3.12-stock
+zip -r ../python312.zip -- *
+cd ..
+rm -rf python3.12-stock

@@ -1,2 +1,0 @@
-#!/bin/hush
-echo -n "$*" > "/.fscmd"

@@ -2,7 +2,7 @@
 
 mkdir image-root
 sudo tar -xvf buildroot/output/images/rootfs.tar -C image-root
-sudo -s
+sudo ./shrink_py
 sudo $HOME/vcs/tinyemu-2019-12-21/build_filelist image-root httpfs
 rsync -r --delete httpfs/ ../../../web/public/jslinux/simple.9p/
 sudo rm -rf httpfs image-root

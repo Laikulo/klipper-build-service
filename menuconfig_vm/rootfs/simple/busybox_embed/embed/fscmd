@@ -1,0 +1,34 @@
+#!/bin/hush
+if [[ ! $1 ]]; then
+	echo >&2 "command required"
+	exit 2
+fi
+
+dispatch_command() {
+	echo -n "$*" > "/.fscmd"
+}
+
+case "$1" in
+  -h|help)
+  	cat >&2 <<-.
+		$0 set_inbox INBOX_DIR | send FILE... | RAW_COMMAND [ARGS...]
+		set_inbox INBOX_DIR - Set the directory which files will be dropped into
+		send FILE... - Send one or more files to the outside world
+		RAW_COMMAND - Send a raw fs command.
+		.
+		exit 0
+		;;
+	set_inbox)
+		dispatch_command set_import_dir "$(realpath "$2")"
+		;;
+  send)
+  	shift 1
+  	for f in "$@"; do
+  		dispatch_command export_file "$(realpath "$f")"
+		done
+		;;
+	*)
+		dispatch_command "$@"
+		;;
+esac
+

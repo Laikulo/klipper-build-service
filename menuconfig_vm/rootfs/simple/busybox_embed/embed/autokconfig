@@ -1,0 +1,4 @@
+#!/bin/hush
+
+echo >&2 "WIP. This is coming soon"
+read -r foobar
