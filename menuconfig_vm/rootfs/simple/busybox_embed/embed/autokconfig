@@ -1,4 +1,8 @@
 #!/bin/hush
-
-echo >&2 "WIP. This is coming soon"
-read -r foobar
+read -r kcmd </proc/cmdline
+if [[ $kcmd != "${kcmd/autokconfig}" ]]; then
+	echo >&2 "WIP. This is coming soon"
+	read -r foobar
+else
+	exec hush -l
+fi

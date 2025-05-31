@@ -1,0 +1,7 @@
+#!/bin/hush
+read -r kcmd </proc/cmdline
+if [[ $kcmd != "${kcmd/autologin}" ]]; then
+  exec login -f klipper "$@"
+else
+  exec login "$@"
+fi
