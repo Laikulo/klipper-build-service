@@ -548,7 +548,7 @@ function start_vm(user, pwd, terminalFn, vmParams)
         height = 0;
         /* start the terminal */
         term = terminalFn(cols, rows, term_handler)
-        term.write(" - Setting up workspace...\r\n");
+        term.write(" - Setting up workspace...");
     }
 
 //    console.log("cpu=" + cpu + " url=" + url + " mem=" + mem_size);

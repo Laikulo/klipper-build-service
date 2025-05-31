@@ -5,7 +5,7 @@
     <style>
         #terminal {
             border: 1px blue solid;
-            width: 700px;
+            width: 720px;
             height: auto;
             display: block;
         }
@@ -13,14 +13,14 @@
 </head>
 <body onload="kbs_init()">
 <div id="terminal"></div>
-<form onsubmit="start_kconfig(this)">
+<form id="kconfig_form">
     <label for="kconfig_bundle">kconfig bundle</label>
     <input id="kconfig_bundle" value="take1" required></input>
     <br>
     <label for="starting_config">starting config</label>
     <input type="file" id="starting_config"></input>
     <br>
-    <button type="submit" id="do_the_thing" disabled>do the thing</button>
+    <button type="submit" id="do_the_thing">do the thing</button>
 </form>
 <p>
     This tool makes use of
