@@ -1,28 +1,53 @@
-#!/usr/bin/env python3
-
 import logging
 import os
 import sys
 from typing import Optional
+from pathlib import Path
 
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
 def main():
-    logger.info("KBS Menuconfig v0.0.0")
-    logger.info("Starting Up...")
-    # We delay imports here, so that the startup message prints earlier.
-    import pyinotify
-    if '/bin/menuconfig_kcl' not in sys.path:
-        sys.path.append('/bin/menuconfig_kcl')
+    logger.info("KBS Menuconfig v0.0.0 Starting up...")
+    # We import this during startup, so that we don't have a delay in the user critical path
     import menuconfig
-    logger.info("Waiting on kconfig bundle...")
-    foo = input()
-    launch_menuconfig(foo, 'src/Kconfig')
+    import termios
+    import tty
+    import tarfile
+    logger.info("Ready")
+    wait_for_char(chr(0x06))
+    # TODO: check if a config was uploaded too
+    kconfig_tree = Path('klipper_kconfig')
+    with open("klipper.config", "w+") as f:
+        f.write("# Example empty config\r\n")
+    logger.info("Extracting Kconfig bundle...")
+    kconfig_tree.mkdir()
+    extract_kconfigs(f"/media/inbox/kconfig.tar", kconfig_tree)
+    launch_menuconfig(str(kconfig_tree.resolve()), 'src/Kconfig')
+    logger.info("WIP: Would upload config here")
+
+def wait_for_char(char):
+    import termios
+    import tty
+    stdin_fd = sys.stdin.fileno()
+    old_attr = termios.tcgetattr(stdin_fd)
+    tty.setraw(stdin_fd)
+    while True:
+       if sys.stdin.read(1) == char:
+            break
+    termios.tcsetattr(stdin_fd, termios.TCSADRAIN, old_attr)
+
+def extract_kconfigs(archive, path):
+    import tarfile
+    kconfig_tar = tarfile.TarFile(archive)
+    kconfig_tar.extractall(path, filter="data")
 
 def launch_menuconfig(srctree: Optional[str], kconfig_path: str):
+    import menuconfig
     # menuconfig reads this from the environment, so we override it here
     os.environ["srctree"] = srctree
     os.environ['KCONFIG_CONFIG'] = "klipper.config"
-    menuconfig.menuconfig(kconfig_path)
+    sys.argv = [ 'menuconfig', kconfig_path ]
+    menuconfig._main()
 
 main()
