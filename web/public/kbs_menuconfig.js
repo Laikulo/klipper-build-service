@@ -7,23 +7,52 @@ VM_STATES = [
 ]
 window.vm_state = 0 // Default to OFF
 
-function on_file_export(filename, blob) {
-    alert(filename + "exported")
-    console.log(blob)
+// Called by the WASM side
+function on_file_export(filename, data) {
+    if (filename === 'klipper.config') {
+        on_config_generated(data)
+    } else {
+        alert(filename + " unexpectedly exported ignoring it")
+        console.log(data)
+    }
 }
 
 function on_config_generated(config_data) {
+    window.current_config = config_data
+    modal('config_done')
 }
 
-function update_modal_form(ev) {
-    let conf_file = document.getElementById('config_file')
-    if (ev.target.id === "config_mode_upload") {
-        conf_file.disabled = false
-        if (!conf_file.value) {
-            conf_file.click()
-        }
-    } else if (ev.target.id === "config_mode_scratch") {
-        conf_file.disabled = true
+function discard_config() {
+    window.current_config = null
+    modal(null)
+}
+
+function download_config(filename) {
+    let config_url = URL.createObjectURL(window.current_config)
+    let config_dl = document.createElement('a');
+    config_dl.setAttribute("download", filename)
+    config_dl.setAttribute('style', "display:none;")
+    config_dl.innerHTML = filename
+    config_dl.href = config_url
+    document.body.appendChild(config_dl)
+    config_dl.click()
+    document.body.removeChild(config_dl)
+}
+
+function modal(name) {
+    if (window.active_modal === name) {
+        return // nothing to do
+    }
+    if (window.active_modal) {
+        document.getElementById("modal_" + window.active_modal).classList.remove('modal_active')
+    }
+    if (name) {
+        window.active_modal = name
+        document.getElementById("modal_" + name).classList.add('modal_active')
+        document.getElementById('terminal').classList.add('blurred')
+    } else {
+        window.active_modal = null
+        document.getElementById('terminal').classList.remove('blurred')
     }
 }
 
@@ -31,14 +60,15 @@ function vm_state_change(new_state) {
     window.vm_state = new_state
     document.getElementById('vm_state_text').textContent = VM_STATES[new_state]
     set_led('on', (new_state > 0))
+    set_led('working', (new_state !== 0 && new_state !== 2))
 }
 
 function run_menuconfig_v3(ev) {
     ev.preventDefault()
     let file_list = null
     if (document.getElementById('form_v3_config_file').checked) {
-        file_chooser = document.getElementById('form_v3_config_file_chooser')
-        if (!file_chooser.files) {
+        let file_chooser = document.getElementById('form_v3_config_file_chooser')
+        if (!file_chooser.value) {
             alert("File mode selected, but no file uploaded. Please check input and try again!")
             return false
         }
@@ -141,6 +171,7 @@ function on_disk_act(is_active) {
 }
 
 window.kbs_init = function () {
+    window.active_modal = null
     document.getElementById('kconfig_form_v3').onsubmit = run_menuconfig_v3
     start_vm(null, null, setupTerm, {
         url: "menuconfig-riscv64.cfg",
