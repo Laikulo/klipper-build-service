@@ -3,25 +3,81 @@
 <head>
     <title>kConfig - Klipper Build Service</title>
     <style>
-        #terminal {
-            border: 1px blue solid;
-            width: 720px;
+        body {
+            background-color: slategray
+        }
+        #terminal_container {
+            border: 20px darkgray solid;
+            border-radius: 5px;
+            box-shadow: 0 0 20px 0;
+            margin: 10px;
+            width: 740px;
             height: auto;
             display: block;
+            background-color: darkgray;
         }
+        #terminal {
+            border: 10px black solid;
+            border-radius: 5px;
+            min-height: 510px;
+            background-color: black;
+        }
+
+        #form_v3_submit {
+            float: right;
+        }
+
+        .led {
+            display: inline-block;
+            width: 20px;
+            height: 10px;
+            background-color: #002F00;
+        }
+
+        .led.led_on {
+            background-color: #009F00;
+            box-shadow: inset 0 0 2px 1px;
+        }
+
+        .led.led_amber {
+            background-color: #444400
+        }
+
+        .led.led_amber.led_on {
+            background-color: #AAAA00
+        }
+
     </style>
 </head>
 <body onload="kbs_init()">
-<div id="terminal"></div>
-<form id="kconfig_form">
-    <label for="kconfig_bundle">kconfig bundle</label>
-    <input id="kconfig_bundle" value="take1" required></input>
-    <br>
-    <label for="starting_config">starting config</label>
-    <input type="file" id="starting_config"></input>
-    <br>
-    <button type="submit" id="do_the_thing">do the thing</button>
-</form>
+<div id="terminal_container">
+    <div id="control_strip"><form id="kconfig_form_v3">
+        <label for="form_v3_upstream">Variant:</label>
+        <select id="form_v3_upstream">
+            <option value="klipper" selected>Klipper</option>
+            <option value="kalico">Kalico</option>
+        </select>
+        <label for="form_v3_version">Version:</label>
+        <select id="form_v3_version">
+            <option value="default" selected>Default</option>
+            <option value="fake" disabled>(more soon)</option>
+        </select>
+        <input type="radio" id="form_v3_config_scratch" name="form_v3_config" checked/>
+        <label for="form_v3_config_scratch">Empty</label>
+        <input type="radio" id="form_v3_config_file" name="form_v3_config"/>
+        <label for="form_v3_config_file">File</label>
+        <input type="file" id="form_v3_config_file_chooser"/>
+        <button id="form_v3_submit">Go!</button>
+    </form></div>
+    <div id="terminal_container_inner">
+        <div id="terminal"></div>
+    </div>
+    <div id="status_bar">
+        On: <div class="led" id="led_on"></div>
+        Access: <div class="led led_amber" id="led_access"></div>
+        VM State: <span id="vm_state_text">OFF</span>
+    </div>
+</div>
 <p>
     This tool makes use of
     <a href="https://bellard.org/tinyemu">JSLinux</a>,

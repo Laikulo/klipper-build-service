@@ -22,8 +22,12 @@ def main():
 def proc_loop():
     import shutil
     logger.info("Menuconfig engine ready")
-    # TODO: Indicate to the JS-side code that we are ready for input
+    # Inform the JS side that we are ready
+    send_immediate(chr(0x02))
+    # Wait for the JS side to "say go"
     wait_for_char(chr(0x07))
+    # Acknowledge that request
+    send_immediate(chr(0x06))
     kconfig_tree = Path('klipper_kconfig')
     config_path = Path('klipper.config')
     src_config_path = Path('/media/inbox/klipper.config')
@@ -43,10 +47,16 @@ def proc_loop():
     src_config_path.unlink(missing_ok=True)
     # We don't clean the source tar, because it is always there, and will get overwritten
     logger.info("Complete")
+    # Indicate completion of cycle
+    send_immediate(chr(0x03))
 
 FSCMD_PATH = Path("/.fscmd")
 def send_file(path: Path):
     FSCMD_PATH.write_text(f"export_file {path.resolve()}")
+
+def send_immediate(in_data):
+    sys.stdout.write(in_data)
+    sys.stdout.flush()
 
 def wait_for_char(char):
     import termios

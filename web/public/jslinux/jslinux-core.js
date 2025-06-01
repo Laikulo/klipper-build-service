@@ -75,6 +75,7 @@ function term_handler(str)
 // Single boolean arg indicates DL state
 function update_downloading(flag)
 {
+    on_disk_act(flag)
 }
 
 function get_params()
