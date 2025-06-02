@@ -4,6 +4,8 @@ import tarfile
 from pathlib import Path
 from pprint import pprint as p
 
+# TODO: Make this all argparse-y
+
 in_tar = tarfile.open('buildroot/output/images/rootfs.tar')
 
 vfs = VirtualFS()
