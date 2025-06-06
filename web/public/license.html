@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>KBS Licenses</title>
+    <style>
+        table {
+            border: 2px solid black;
+        }
+        th, td {
+            border: 1px solid gray;
+        }
+        th {
+            border-bottom: black solid 3px;
+        }
+    </style>
+</head>
+<body>
+<p>KBS is an amalgam of a number of open source projects, KBS's own code is licensed under ?TBD?</p>
+
+<p>KBS also makes use of a number of independent components provided under other licenses: </p>
+
+<table>
+    <tbody>
+    <tr>
+        <th>Component</th>
+        <th>Usage</th>
+        <th>Project</th>
+        <th>License</th>
+    </tr>
+    <tr>
+        <td>Menuconfig</td>
+        <td>Browser VM</td>
+        <td><a href="https://bellard.org/TinyEmu/">TinyEmu</a>/<a href="https://bellard.org/jslinux/">JSLinux</a></td>
+        <td><a href="https://opensource.org/license/MIT">MIT</a></td>
+    </tr>
+    <tr>
+        <td>Menuconfig</td>
+        <td>Bootloader</td>
+        <td>pk/bbl</td>
+        <td>Multiple: <a href="https://github.com/riscv-software-src/riscv-pk/blob/master/LICENSE">1</a> <a href="https://github.com/riscv-software-src/riscv-pk/blob/master/LICENSE.Batten">2</a></td>
+        <!-- This version of BBL doesn't have the logo, so we don't have to deal with a THIRD license for this one bin -->
+    </tr>
+    <tr>
+        <td>Menuconfig</td>
+        <td>OS Kernel</td>
+        <td>Linux</td>
+        <td><a href="https://opensource.org/license/gpl-2-0">GPL-2.0</a></td>
+    </tr>
+    <tr>
+        <td>Menuconfig</td>
+        <td>C Standard Library</td>
+        <td>uClibC</td>
+        <td><a href="https://opensource.org/license/lgpl-2-1">LGPL-2.1</a></td>
+    </tr>
+    <tr>
+        <td>Menuconfig</td>
+        <td>C/++ Runtime</td>
+        <td>gcc runtime</td>
+        <td><a href="https://opensource.org/license/gpl-3-0">GPL-3.0</a> with <a href="https://www.gnu.org/licenses/gcc-exception-3.1.html">runtime exception</a></td>
+    </tr>
+    <tr>
+        <td>Menuconfig</td>
+        <td>Userland</td>
+        <td>Busybox</td>
+        <td><a href="https://opensource.org/license/gpl-2-0">GPL-2.0</a></td>
+    </tr>
+    <!-- We don't actually have bzip or any of these enabled
+    <tr>
+        <td>Menuconfig</td>
+        <td>archives in userland</td>
+        <td>libarchive</td>
+        <td><a href="https://opensource.org/license/gpl-2-0">GPL-2.0</a></td>
+    </tr>
+    -->
+    <tr>
+        <td>Menuconfig</td>
+        <td>Library</td>
+        <td>libffi</td>
+        <td><a href="https://raw.githubusercontent.com/libffi/libffi/refs/heads/master/LICENSE">MIT</a></td>
+    </tr>
+    <tr>
+        <td>Menuconfig</td>
+        <td>Library</td>
+        <td>zlib</td>
+        <td><a href="https://zlib.net/zlib_license.html">zlib license</a></td>
+    </tr>
+    <tr>
+        <td>Menuconfig</td>
+        <td>Terminal Display Library</td>
+        <td>ncurses</td>
+        <td><a href="https://invisible-island.net/ncurses/ncurses-license.html">ncurses License</a> (it's a bit complicated)</td>
+    </tr>
+    <tr>
+        <td>Menuconfig</td>
+        <td>Python</td>
+        <td>CPython</td>
+        <td><a href="https://opensource.org/license/python-2-0">PSF-2.0</a></td>
+    </tr>
+    <tr>
+        <td>Menuconfig</td>
+        <td>kconfig implementation</td>
+        <td>kconfiglib (Klipper)</td>
+        <td><a href="https://opensource.org/license/isc-license-txt">ISC</a></td>
+    </tr>
+    <tr>
+        <td>Menuconfig</td>
+        <td>Web Terminal</td>
+        <td>xterm.js</td>
+        <td><a href="https://github.com/xtermjs/xterm.js/blob/master/LICENSE">MIT</a></td>
+    </tr>
+    <tr>
+        <td>Menuconfig</td>
+        <td>Klipper/Kalico version icons</td>
+        <td>solacon</td>
+        <td><a href="solacon/LICENSE">MIT</a></td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>FAQs</h3>
+<pre>
+Q: Why is this page unstyled, and most of the projects don't have links?
+A: Identifying licenses for these projects was far more of a pain than I expected, so I couldn't be bothered.
+
+Q: I'd like the source code of something in KBS that isn't already published or downloadable, how do I get that?
+A: Please send an email to kbs-license@haun.guru. Everything should already be up there, or on the github, but I might
+   have missed something.
+
+Q: Hey, that's my project, and you've got the license listed wrong, or a link is broken. How can we fix this?
+A: That's an oversight in my part, email kbs-license@haun.guru, and we'll sort it out.
+
+Q: Why is this like this?
+A: Apparently, licenses are complicated, and there are a ton of similar ones, and many don't identify which they are.
+
+Q: Can I have an SBOM?
+A: For now, no. I might work one up when I have the brainpower.
+
+Q: Why go through this trouble, when this is an online service?
+A: Some components of KBS run in your browser, and I consider that distribution in binary (wasm) and some source (js).
+
+Q: Do you feel that you have complied with the licenses of the projects KBS uses or is based on?
+A: Before I wrote this page, I thought I was pretty much safe.
+   Having looked deeper, I can say I am not at all qualified to answer that question.
+   Though I am pretty sure that I am compliant, at least as much as a layperson like myself ever can be.
+</pre>
+</body>
+</html>

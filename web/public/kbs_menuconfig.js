@@ -57,6 +57,10 @@ function vm_state_change(new_state) {
     set_led('working', (new_state !== 0 && new_state !== 2))
 }
 
+function get_selected_ver() {
+    return kconfig_bundle_url = window.kconfig_project.revisions[document.getElementById('form_v3_version').selectedOptions[0].value]
+}
+
 function run_menuconfig_v3(ev) {
     ev.preventDefault()
     let file_list = null
@@ -175,6 +179,28 @@ async function populate_versions(project, target_selector) {
     })
     target_selector.replaceChildren(...new_opts)
     target_selector.disabled = false
+    update_version_icon()
+}
+
+
+function set_solacon(name, hash_text) {
+    let obj = document.getElementById(name)
+    if(obj){
+        obj.generate(hash_text)
+        obj.setRGBFromHash()
+        obj.refresh()
+    } else {
+        let new_obj = document.createElement("object")
+        new_obj.id = 'version_icon'
+        new_obj.type = "image/svg+xml"
+        new_obj.data = "solacon/solacon.svg"
+        new_obj.setAttribute("data-value", hash_text)
+        document.getElementById(name +'_container').replaceChildren(new_obj)
+    }
+}
+
+function update_version_icon(hash_text) {
+    set_solacon("version_icon", get_selected_ver().git_sha)
 }
 
 window.kbs_init = function () {
@@ -187,6 +213,10 @@ window.kbs_init = function () {
         populate_versions(event.target.value, document.getElementById('form_v3_version')).then(_ => {
             submit_button.disabled = false
         })
+    }
+
+    document.getElementById('form_v3_version').onchange = _ => {
+        update_version_icon()
     }
 
     window.active_modal = null

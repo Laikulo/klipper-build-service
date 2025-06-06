@@ -99,6 +99,24 @@
             background-color: #C00;
         }
 
+        .solacon_container {
+            background-color: lightgray;
+            box-shadow: inset 0 0 40px 5px black;
+            padding: 10px;
+        }
+
+        #version_icon_container {
+            width: 150px;
+            height: 150px;
+            border: 1px solid black;
+        }
+
+        #version_icon {
+            width: inherit;
+            height: inherit;
+        }
+
+
     </style>
 </head>
 <body onload="kbs_init()">
@@ -137,6 +155,8 @@
             Access: <div class="led led_red" id="led_access"></div>
             VM State: <span id="vm_state_text">OFF</span>
         </div>
+    </div>
+    <div id="version_icon_container" class="hidden solacon_container">
     </div>
     <p>
         This tool makes use of
