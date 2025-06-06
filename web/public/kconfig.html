@@ -106,15 +106,12 @@
     <h1>KBS Online Menuconfig</h1>
     <div id="terminal_container">
         <div id="control_strip"><form id="kconfig_form_v3">
-            <label for="form_v3_upstream">Variant:</label>
-            <select id="form_v3_upstream">
+            <select aria-label="klipper variant" id="form_v3_upstream">
                 <option value="klipper" selected>Klipper</option>
                 <option value="kalico">Kalico</option>
             </select>
-            <label for="form_v3_version">Version:</label>
-            <select id="form_v3_version">
-                <option value="default" selected>Default</option>
-                <option value="fake" disabled>(more soon)</option>
+            <select aria-label="version" id="form_v3_version">
+                <option selected disabled>Loading...</option>
             </select>
             <input type="radio" id="form_v3_config_scratch" name="form_v3_config" checked/>
             <label for="form_v3_config_scratch">Empty</label>
@@ -149,6 +146,7 @@
     <link rel="stylesheet" href="xterm/css/xterm.css">
     <script src="xterm/lib/xterm.js"></script>
     <script src="jslinux/jslinux-core.js"></script>
+    <script src="kbs_revdb.js"></script>
     <script src="kbs_menuconfig.js"></script>
 </div>
 </body>

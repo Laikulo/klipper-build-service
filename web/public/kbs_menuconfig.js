@@ -1,10 +1,4 @@
-VM_STATES = [
-    "OFF",
-    "BOOTING",
-    "READY",
-    "RUNNING",
-    "RESETTING"
-]
+VM_STATES = ["OFF", "BOOTING", "READY", "RUNNING", "RESETTING"]
 window.vm_state = 0 // Default to OFF
 
 // Called by the WASM side
@@ -74,12 +68,12 @@ function run_menuconfig_v3(ev) {
         }
         file_list = file_chooser
     }
-    launch_kconfig('take1', file_list)
+    let kconfig_bundle_url = window.kconfig_project.revisions[document.getElementById('form_v3_version').selectedOptions[0].value].getKConfigBundleUrl()
+    launch_kconfig(kconfig_bundle_url, file_list)
     return false
 }
 
-function launch_kconfig(kconfig_bundle_name, conf_file) {
-    const kconfig_tar_path = "kconfig_bundles/" + kconfig_bundle_name + '.tar'
+function launch_kconfig(kconfig_bundle_url, conf_file) {
     if (conf_file && conf_file.value) {
         let conf_reader = new FileReader()
         conf_reader.onload = (_) => {
@@ -87,7 +81,7 @@ function launch_kconfig(kconfig_bundle_name, conf_file) {
         }
         conf_reader.readAsArrayBuffer(conf_file.files[0])
     }
-    fetch(kconfig_tar_path).then((response) => {
+    fetch(kconfig_bundle_url).then((response) => {
         if (response.ok) {
             response.arrayBuffer().then((buf) => {
                 send_file_to_vm('kconfig.tar', buf)
@@ -136,9 +130,7 @@ function proc_vm_input(str) {
 
 let setupTerm = (cols, rows, handler) => {
     let web_terminal = new window.Terminal({
-        cols: cols,
-        rows: rows,
-        cursorBlink: true
+        cols: cols, rows: rows, cursorBlink: true
     })
     web_terminal.onData(handler)
     web_terminal.open(document.getElementById('terminal'))
@@ -147,11 +139,9 @@ let setupTerm = (cols, rows, handler) => {
     return {
         write: (x) => {
             web_terminal.write(proc_vm_input(x))
-        },
-        writeln: (x) => {
+        }, writeln: (x) => {
             web_terminal.writeln(x)
-        },
-        getSize: () => {
+        }, getSize: () => {
             return [cols, rows]
         }
     }
@@ -170,12 +160,42 @@ function on_disk_act(is_active) {
     set_led('access', is_active)
 }
 
+async function populate_versions(project, target_selector) {
+    window.kconfig_project = window.kconfig_repo.getProject(project)
+    let loading_opt = document.createElement("option")
+    loading_opt.innerText = 'Loading...'
+    loading_opt.disabled = true
+    target_selector.replaceChildren(loading_opt)
+    target_selector.selectedIndex = 0
+    let new_opts = (await window.kconfig_project.getRevisions()).entries().map(e => {
+        let opt = document.createElement("option")
+        opt.value = e[0]
+        opt.innerText = e[1].human_version
+        return opt
+    })
+    target_selector.replaceChildren(...new_opts)
+    target_selector.disabled = false
+}
+
 window.kbs_init = function () {
+    window.kconfig_repo = new KBSRevisionRepo("./revisions")
+    window.kconfig_project = undefined
+    let populate_promise = populate_versions('klipper', document.getElementById('form_v3_version'))
+    document.getElementById('form_v3_upstream').onchange = event => {
+        let submit_button = document.getElementById('form_v3_submit')
+        submit_button.disabled = true
+        populate_versions(event.target.value, document.getElementById('form_v3_version')).then(_ => {
+            submit_button.disabled = false
+        })
+    }
+
     window.active_modal = null
+    if (window.location.hash.includes("novm")) {
+        return
+    }
     document.getElementById('kconfig_form_v3').onsubmit = run_menuconfig_v3
     start_vm(null, null, setupTerm, {
-        url: "menuconfig-riscv64.cfg",
-        scriptBase: 'jslinux/'
+        url: "menuconfig-riscv64.cfg", scriptBase: 'jslinux/'
     })
     vm_state_change(1)
 }

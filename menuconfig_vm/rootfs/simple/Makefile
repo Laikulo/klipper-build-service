@@ -1,5 +1,5 @@
 
-all: buildroot/output/images/rootfs.tar
+all: buildroot/output/images/rootfs.tar httpfs/head
 
 buildroot/output/images/rootfs.tar: br-all
 
@@ -26,5 +26,11 @@ root-overlay/bin/kbs_menuconfig: ../../../kbs_menuconfig/kbs_menuconfig.py root-
 
 root-overlay/bin/menuconfig_kcl: ../../../kconfiglib/menuconfig_kcl root-overlay/bin
 	cp $< $@
+
+web:
+	rsync -r --delete httpfs/ ../../../web/public/fs/tartest/
+
+httpfs/head: buildroot/output/images/rootfs.tar tar2filelist.py
+	python3.11 ./tar2filelist.py
 
 .PHONY: all br-% busybox-config
