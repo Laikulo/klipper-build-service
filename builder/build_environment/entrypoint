@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-if [[ $1 == 'exec' ]]; then
+if [[ $1 == '.exec' ]]; then
     shift 1
     exec "$0" "$@"
 fi
 
-if [[ $1 == 'shell' ]]; then
+if [[ $1 == '.shell' ]]; then
 	exec "${SHELL-:/bin/bash}" -l
 fi
 
