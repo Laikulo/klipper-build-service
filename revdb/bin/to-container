@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+tar -cvf revdb.tar --owner root:0 --group root:0 --format ustar -C pub klipper.csv kalico.csv kconfig-bundles
+img_hash=$(podman import revdb.tar)
+podman tag "$img_hash" ghcr.io/laikulo/klipper-build-service/kbs_revdb:latest
+podman push ghcr.io/laikulo/klipper-build-service/kbs_revdb:latest

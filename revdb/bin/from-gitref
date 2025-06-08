@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -xe
+
+gitref_path="$(realpath "$1")"
+bin_dir="$(realpath "$(dirname "$0")")"
+
+
+function do_project {
+	local project_gitdir
+	project_gitdir="$(mktemp -d)"
+	local project_name="$1"
+	git init "$project_gitdir" --initial-branch nonexistant_zzxzzy
+	cat > "$project_gitdir"/.git/objects/info/alternates <<<"$gitref_path/objects"
+	pushd "$project_gitdir"
+	git fetch "$gitref_path" --no-tags --no-write-fetch-head "refs/tags/${project_name}/*:refs/tags/*" "refs/heads/${project_name}/*:refs/heads/*"
+	popd
+
+	local csv_path="$2"
+	local bundle_dir="$3"
+
+	"$bin_dir/rev-table" "$project_gitdir" "REMOTE_HEAD" | tee /dev/stderr | sort -V -t, -k2 -r > "$csv_path"
+
+	"$bin_dir"/make-bundles "$project_name" "$bundle_dir" "$project_gitdir" "$csv_path"
+
+	rm -rf "$project_gitdir"
+}
+
+rm -rf pub/*
+
+do_project klipper "pub/klipper.csv" pub/kconfig-bundles/klipper
+
+do_project kalico "pub/kalico.csv" pub/kconfig-bundles/kalico
+

@@ -11,7 +11,11 @@ if [[ ! -d gitref.git ]]; then
     git init --bare gitref.git
 fi
 cd gitref.git
-git fetch https://github.com/klipper3d/klipper.git --no-tags --no-write-fetch-head '+refs/heads/*:refs/heads/klipper/*' '+refs/tags/*:refs/tags/klipper/*'
-git fetch https://github.com/KalicoCrew/kalico.git --no-tags --no-write-fetch-head '+refs/heads/*:refs/heads/kalico/*' '+refs/tags/*:refs/tags/kalico/*'
+git fetch https://github.com/klipper3d/klipper.git --no-tags --no-write-fetch-head '+rfs/heads/*:refs/heads/klipper/*' '+refs/tags/*:refs/tags/klipper/*' '+HEAD:refs/heads/klipper/REMOTE_HEAD'
+git fetch https://github.com/KalicoCrew/kalico.git --no-tags --no-write-fetch-head '+refs/heads/*:refs/heads/kalico/*' '+refs/tags/*:refs/tags/kalico/*' '+HEAD:refs/heads/kalico/REMOTE_HEAD'
 git repack -a -l -d
 tar -cvf ../gitref.git.tar --owner root:0 --group root:0 --format=ustar *
+cd ..
+image_hash="$(podman import gitref.git.tar)"
+podman tag "$image_hash" ghcr.io/laikulo/klipper-build-service/kbs_gitref:latest
+podman push ghcr.io/laikulo/klipper-build-service/kbs_gitref:latest
