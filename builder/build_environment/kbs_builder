@@ -3,6 +3,7 @@ import argparse
 import json
 import logging
 import shutil
+import zipfile
 from pathlib import Path
 from subprocess import run
 from pprint import pprint as p
@@ -30,7 +31,7 @@ run([
     "get-srctree",
     args.project,
     args.version
-], check=True )
+], check=True)
 
 src_tree = Path('srctree')
 
@@ -41,18 +42,29 @@ if config_src.exists():
 else:
     raise ValueError("Configuration not present, reufsing to build")
 
-run(["make"], cwd=src_tree, check=True)
+run(["make", "-j"], cwd=src_tree, check=True)
 
-out_dir = src_tree / ''
+out_dir = src_tree / 'out'
+
 
 def should_package_file(path: Path) -> bool:
     if path.stem == "klipper":
+        logger.info(f"Archiving {path.name}")
         return True
     return False
 
+
 out_files = filter(should_package_file, out_dir.iterdir())
-p(out_files)
 
 with (OUTBOX / 'build-meta.json').open("w+") as build_meta_file:
     json.dump(BUILD_META, build_meta_file, indent=2)
 
+with zipfile.ZipFile(OUTBOX / 'result.zip', 'x') as output_zip:
+    for out_file in out_files:
+        out_file: Path
+        with output_zip.open(out_file.name, "w") as zip_entry:
+            zip_entry.write(out_file.read_bytes())
+    with output_zip.open("build-meta.json", 'w') as zip_meta:
+        zip_meta.write(json.dumps(BUILD_META, indent=2).encode())
+    with output_zip.open('build.log', 'w') as zip_log:
+        zip_log.write("LOG COMING SOON".encode())
