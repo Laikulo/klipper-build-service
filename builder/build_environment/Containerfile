@@ -1,22 +1,22 @@
-from bitnami/minideb:latest as pruchain_downloader
-run install_packages git ca-certificates wget lbzip2 xz-utils
-run git clone https://github.com/dinuxbg/gnupru -b 2024.05 --depth 1 /usr/src/gnupru
-workdir /usr/src/gnupru
-env PREFIX=/opt/gnupru
-run ./download-and-prepare.sh
+FROM bitnami/minideb:latest AS pruchain_downloader
+RUN install_packages git ca-certificates wget lbzip2 xz-utils
+RUN git clone https://github.com/dinuxbg/gnupru -b 2024.05 --depth 1 /usr/src/gnupru
+WORKDIR /usr/src/gnupru
+ENV PREFIX=/opt/gnupru
+RUN ./download-and-prepare.sh
 
-from bitnami/minideb:latest as pruchain_builder
-run install_packages git pv ca-certificates wget lbzip2 xz-utils gcc build-essential file texinfo libgmp-dev libmpfr-dev libmpc-dev
-copy --from=pruchain_downloader /usr/src/gnupru /usr/src/gnupru/
-workdir /usr/src/gnupru
-env PREFIX=/opt/gnupru
-run ./build.sh
+FROM bitnami/minideb:latest AS pruchain_builder
+RUN install_packages git pv ca-certificates wget lbzip2 xz-utils gcc build-essential file texinfo libgmp-dev libmpfr-dev libmpc-dev
+COPY --from=pruchain_downloader /usr/src/gnupru /usr/src/gnupru/
+WORKDIR /usr/src/gnupru
+ENV PREFIX=/opt/gnupru
+RUN ./build.sh
 
-FROM bitnami/minideb:latest as or1k_downloader
+FROM bitnami/minideb:latest AS or1k_downloader
 RUN install_packages curl ca-certificates
 RUN curl -L# 'https://more.musl.cc/10/x86_64-linux-musl/or1k-linux-musl-cross.tgz' | tar -C /opt -xz
 
-FROM bitnami/minideb:bookworm as kbs_buildarea
+FROM bitnami/minideb:bookworm AS kbs_buildarea
 RUN \
     groupadd -g 1000 klipper &&\
     useradd -m -d /home/klipper -u 1000 -g klipper klipper
@@ -32,5 +32,7 @@ COPY --from=or1k_downloader /opt/or1k-linux-musl-cross /opt/or1k-linux-musl-cros
 COPY --from=pruchain_builder /opt/gnupru /opt/gnupru/
 ENV PATH=${PATH}:/opt/:/opt/gnupru/bin:/opt/or1k-linux-musl-cross/bin
 RUN \
-   mkdir /media/inbox /media/outbox /media/git
+   mkdir /media/inbox /media/outbox /media/git &&\
+   git config --system safe.directory /media/git
 USER klipper
+
