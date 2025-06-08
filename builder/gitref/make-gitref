@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -xe
+shopt -s globstar nullglob
+
+script_dir="$(dirname "$0")"
+# We're not meant to be sourced, so we can do whatever we want to the wd
+cd "$script_dir"
+
+if [[ ! -d gitref.git ]]; then
+    git init --bare gitref.git
+fi
+cd gitref.git
+git fetch https://github.com/klipper3d/klipper.git --no-tags --no-write-fetch-head '+refs/heads/*:refs/heads/klipper/*' '+refs/tags/*:refs/tags/klipper/*'
+git fetch https://github.com/KalicoCrew/kalico.git --no-tags --no-write-fetch-head '+refs/heads/*:refs/heads/kalico/*' '+refs/tags/*:refs/tags/kalico/*'
+git repack -a -l -d
+tar -cvf ../gitref.git.tar --owner root:0 --group root:0 --format=ustar *

@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+import argparse
+import logging
+from pathlib import Path
+from subprocess import run
+
+logger = logging.getLogger()
+
+INBOX = Path('/media/inbox')
+OUTBOX = Path('/media/outbox')
+
+parser = argparse.ArgumentParser()
+parser.add_argument("project", metavar="PROJECT")
+parser.add_argument("vesrion", metavar="VERSION")
+args = parser.parse_args()
+
+logger.info("Checking out repo")
+
+run([
+    "get-srctree",
+    args.project,
+    args.version
+], check=True)

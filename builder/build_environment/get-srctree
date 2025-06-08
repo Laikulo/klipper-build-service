@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -xe
+
+project_name="$1"
+target_revish="$2"
+
+if [[ ! -d srctree ]]; then
+		git init srctree --initial-branch nonexistant_zzxzzy
+fi
+if [[ ! -f srctree/.git/objects/info/alternates ]]; then
+	cat > srctree/.git/objects/info/alternates <<<"/media/git/objects"
+fi
+
+cd srctree
+git fetch /media/git --no-tags --no-write-fetch-head "refs/tags/${project_name}/*:refs/tags/*" "refs/heads/${project_name}/*:refs/heads/*"
+git checkout "$target_revish"
