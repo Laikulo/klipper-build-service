@@ -2,3 +2,4 @@ patches/busybox/embed.patch
 empty_dir/
 root-overlay/bin/kbs_menuconfig
 root-overlay/bin/menuconfig_kcl
+httpfs/
