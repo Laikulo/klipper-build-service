@@ -1,18 +1,28 @@
 #!/usr/bin/env python3
 import argparse
+import json
 import logging
+import shutil
 from pathlib import Path
 from subprocess import run
+from pprint import pprint as p
 
 logger = logging.getLogger()
 
 INBOX = Path('/media/inbox')
 OUTBOX = Path('/media/outbox')
 
+BUILD_META = {}
+
+buildlog = (OUTBOX / 'build.log').open("w+")
+
 parser = argparse.ArgumentParser()
 parser.add_argument("project", metavar="PROJECT")
-parser.add_argument("vesrion", metavar="VERSION")
+parser.add_argument("version", metavar="VERSION")
 args = parser.parse_args()
+
+BUILD_META['project'] = args.project
+BUILD_META['version'] = args.version
 
 logger.info("Checking out repo")
 
@@ -20,4 +30,29 @@ run([
     "get-srctree",
     args.project,
     args.version
-], check=True)
+], check=True )
+
+src_tree = Path('srctree')
+
+config_src = (INBOX / 'Kconfig')
+
+if config_src.exists():
+    shutil.copy(config_src, src_tree / '.config')
+else:
+    raise ValueError("Configuration not present, reufsing to build")
+
+run(["make"], cwd=src_tree, check=True)
+
+out_dir = src_tree / ''
+
+def should_package_file(path: Path) -> bool:
+    if path.stem == "klipper":
+        return True
+    return False
+
+out_files = filter(should_package_file, out_dir.iterdir())
+p(out_files)
+
+with (OUTBOX / 'build-meta.json').open("w+") as build_meta_file:
+    json.dump(BUILD_META, build_meta_file, indent=2)
+

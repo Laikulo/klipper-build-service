@@ -34,6 +34,7 @@ COPY --from=pruchain_builder /opt/gnupru /opt/gnupru/
 ENV PATH=${PATH}:/opt/:/opt/gnupru/bin:/opt/or1k-linux-musl-cross/bin
 RUN \
    mkdir /media/inbox /media/outbox /media/git &&\
+   chmod 1777 /media/outbox &&\
    git config --system safe.directory /media/git
 ADD get-srctree kbs_builder entrypoint /usr/local/bin/
 ENV SHELL=/bin/bash
