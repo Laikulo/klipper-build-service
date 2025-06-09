@@ -33,6 +33,11 @@ function download_config(filename) {
     document.body.removeChild(config_dl)
 }
 
+async function reconfigure() {
+    modal()
+    launch_kconfig(get_selected_ver().getKConfigBundleUrl(), await(window.current_config.arrayBuffer()))
+}
+
 function modal(name) {
     if (window.active_modal === name) {
         return // nothing to do
@@ -58,7 +63,7 @@ function vm_state_change(new_state) {
 }
 
 function get_selected_ver() {
-    return kconfig_bundle_url = window.kconfig_project.revisions[document.getElementById('form_v3_version').selectedOptions[0].value]
+    return window.kconfig_project.revisions[document.getElementById('form_v3_version').selectedOptions[0].value]
 }
 
 function run_menuconfig_v3(ev) {
@@ -78,12 +83,20 @@ function run_menuconfig_v3(ev) {
 }
 
 function launch_kconfig(kconfig_bundle_url, conf_file) {
-    if (conf_file && conf_file.value) {
-        let conf_reader = new FileReader()
-        conf_reader.onload = (_) => {
-            send_file_to_vm('klipper.config', conf_reader.result)
+    if (conf_file) {
+        if (obj_type(conf_file) === 'ArrayBuffer'){
+            send_file_to_vm('klipper.config', conf_file)
         }
-        conf_reader.readAsArrayBuffer(conf_file.files[0])
+        else if (obj_type(conf_file) === 'HTMLInputElement' && conf_file.type === 'file' && conf_file.value) {
+            let conf_reader = new FileReader()
+            conf_reader.onload = (_) => {
+                send_file_to_vm('klipper.config', conf_reader.result)
+            }
+            conf_reader.readAsArrayBuffer(conf_file.files[0])
+        } else {
+            console.log(conf_file)
+            throw("Unexpected config file, not buffer or upload")
+        }
     }
     fetch(kconfig_bundle_url).then((response) => {
         if (response.ok) {
@@ -201,6 +214,14 @@ function set_solacon(name, hash_text) {
 
 function update_version_icon(hash_text) {
     set_solacon("version_icon", get_selected_ver().git_sha)
+}
+
+function obj_type(obj) {
+    if(typeof obj === "object"){
+        return Object.getPrototypeOf(obj).constructor.name
+    } else {
+        return null
+    }
 }
 
 window.kbs_init = function () {
