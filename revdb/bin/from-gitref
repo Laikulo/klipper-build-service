@@ -30,4 +30,3 @@ rm -rf pub/*
 do_project klipper "pub/klipper.csv" pub/kconfig-bundles/klipper
 
 do_project kalico "pub/kalico.csv" pub/kconfig-bundles/kalico
-

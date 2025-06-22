@@ -17,13 +17,13 @@ OO   O--o   o-o
 | \  |   |     |  v{KBS_VER}
 o  o o--o  o--o
 '''
- 
+
 GO_PROMPT = '''
  ~*~ READY ~*~
- 
+
 Please select a version to configure from above,
   then optionally select a config to start with.
-  
+
 When you are ready, press [Go!]
 '''
 
