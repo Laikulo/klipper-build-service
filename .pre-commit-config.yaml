@@ -1,6 +1,4 @@
-# See https://pre-commit.com for more information
-# See https://pre-commit.com/hooks.html for more hooks
-exclude: kconfiglib/src/.*$
+exclude: kconfiglib/src/.*$|web/public/(xterm|jslinux)/
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
@@ -29,3 +27,22 @@ repos:
     rev: v0.10.0.1
     hooks:
       - id: shellcheck
+
+  - repo: local
+    hooks:
+      - id: prettier
+        name: Prettier
+        description: Format JS
+        language: node
+        additional_dependencies:
+          - prettier
+        entry: prettier --write
+        types: [javascript]
+      - id: jshint
+        name: JSHint
+        description: Lint Javascript
+        language: node
+        additional_dependencies:
+          - jshint
+        entry: jshint
+        types: [javascript]
