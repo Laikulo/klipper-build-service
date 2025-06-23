@@ -8,36 +8,36 @@ from pathlib import Path
 from pprint import pprint as p
 
 parser = argparse.ArgumentParser()
-parser.add_argument('project')
-parser.add_argument('output_dir', nargs='?', type=Path)
-parser.add_argument('git_dir', nargs="?", type=Path)
-parser.add_argument('csv_path', nargs="?", type=Path)
+parser.add_argument("project")
+parser.add_argument("output_dir", nargs="?", type=Path)
+parser.add_argument("git_dir", nargs="?", type=Path)
+parser.add_argument("csv_path", nargs="?", type=Path)
 args = parser.parse_args()
 
 project = args.project
 if args.output_dir:
     OUTPUT_PATH = args.output_dir
 else:
-    OUTPUT_PATH = Path('./bundles') / project
+    OUTPUT_PATH = Path("./bundles") / project
 
 if args.git_dir:
     GIT_WORK_TREE = args.git_dir
 else:
-    GIT_WORK_TREE = Path(f'./scratch/{project}')
+    GIT_WORK_TREE = Path(f"./scratch/{project}")
 
 if args.csv_path:
     csv_path = args.csv_path
 else:
-    csv_path = Path(f'./revisions-{project}.csv')
+    csv_path = Path(f"./revisions-{project}.csv")
 
 kconf_to_commit = {}
 
 GIT_ENV = {
-    'GIT_WORK_TREE': GIT_WORK_TREE.resolve(),
-    'GIT_DIR': (GIT_WORK_TREE / '.git').resolve()
+    "GIT_WORK_TREE": GIT_WORK_TREE.resolve(),
+    "GIT_DIR": (GIT_WORK_TREE / ".git").resolve(),
 }
 
-with csv_path.open('r') as csv_file:
+with csv_path.open("r") as csv_file:
     rdr = csv.reader(csv_file)
     for entry in rdr:
         if entry[2] not in kconf_to_commit:
@@ -50,10 +50,26 @@ for kconfig_hash, commit_hash in kconf_to_commit.items():
     if target_path.exists():
         continue
     print(f"Making {kconfig_hash} from {commit_hash}")
-    subprocess.run(['git', 'reset', '--hard', commit_hash], env={**os.environ, **GIT_ENV}, check=True)
+    subprocess.run(
+        ["git", "reset", "--hard", commit_hash],
+        env={**os.environ, **GIT_ENV},
+        check=True,
+    )
     # tar -c --sort=name --owner=root:0 --group=root:0 --mtime="UTC 1970-01-01" -H ustar **/Kconfig | sha256sum | cut -f1 -d' '
-    kconfigs = GIT_WORK_TREE.rglob('**/Kconfig')
-    tar_args = ['tar', '-c', '-f', str(target_path.absolute()), '-C', str(GIT_WORK_TREE.absolute()),
-                '--sort=name', '--owner=root:0', '--group=root:0', '--mtime=UTC 1970-01-01', '-H', 'ustar']
+    kconfigs = GIT_WORK_TREE.rglob("**/Kconfig")
+    tar_args = [
+        "tar",
+        "-c",
+        "-f",
+        str(target_path.absolute()),
+        "-C",
+        str(GIT_WORK_TREE.absolute()),
+        "--sort=name",
+        "--owner=root:0",
+        "--group=root:0",
+        "--mtime=UTC 1970-01-01",
+        "-H",
+        "ustar",
+    ]
     tar_args += sorted((str(p.relative_to(GIT_WORK_TREE)) for p in kconfigs))
     subprocess.run(tar_args, check=True)

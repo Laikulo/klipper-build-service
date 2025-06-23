@@ -21,16 +21,16 @@ patches/busybox/embed.patch: $(wildcard busybox_embed/embed/*) patches/busybox
 root-overlay/bin:
 	mkdir root-overlay/bin
 
-root-overlay/bin/kbs_menuconfig: ../../../kbs_menuconfig/kbs_menuconfig.py root-overlay/bin
-	cp $< $@
+root-overlay/bin/kbs_menuconfig: root-overlay/bin
+	cp ../../../kbs_menuconfig/kbs_menuconfig.py $@
 
-root-overlay/bin/menuconfig_kcl: ../../../kconfiglib/menuconfig_kcl root-overlay/bin
-	cp $< $@
+root-overlay/bin/menuconfig_kcl: root-overlay/bin
+	cp ../../../kconfiglib/menuconfig_kcl $@
 
 web:
 	rsync -r --delete httpfs/ ../../../web/public/fs/tartest/
 
-httpfs/head: buildroot/output/images/rootfs.tar tar2filelist.py
+httpfs/head: buildroot/output/images/rootfs.tar
 	python3.11 ./tar2filelist.py
 
 .PHONY: all br-% busybox-config

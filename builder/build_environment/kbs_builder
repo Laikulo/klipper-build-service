@@ -10,41 +10,37 @@ from pprint import pprint as p
 
 logger = logging.getLogger()
 
-INBOX = Path('/media/inbox')
-OUTBOX = Path('/media/outbox')
+INBOX = Path("/media/inbox")
+OUTBOX = Path("/media/outbox")
 
 BUILD_META = {}
 
-buildlog = (OUTBOX / 'build.log').open("w+")
+buildlog = (OUTBOX / "build.log").open("w+")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("project", metavar="PROJECT")
 parser.add_argument("version", metavar="VERSION")
 args = parser.parse_args()
 
-BUILD_META['project'] = args.project
-BUILD_META['version'] = args.version
+BUILD_META["project"] = args.project
+BUILD_META["version"] = args.version
 
 logger.info("Checking out repo")
 
-run([
-    "get-srctree",
-    args.project,
-    args.version
-], check=True)
+run(["get-srctree", args.project, args.version], check=True)
 
-src_tree = Path('srctree')
+src_tree = Path("srctree")
 
-config_src = (INBOX / 'Kconfig')
+config_src = INBOX / "Kconfig"
 
 if config_src.exists():
-    shutil.copy(config_src, src_tree / '.config')
+    shutil.copy(config_src, src_tree / ".config")
 else:
     raise ValueError("Configuration not present, reufsing to build")
 
 run(["make", "-j"], cwd=src_tree, check=True)
 
-out_dir = src_tree / 'out'
+out_dir = src_tree / "out"
 
 
 def should_package_file(path: Path) -> bool:
@@ -56,15 +52,15 @@ def should_package_file(path: Path) -> bool:
 
 out_files = filter(should_package_file, out_dir.iterdir())
 
-with (OUTBOX / 'build-meta.json').open("w+") as build_meta_file:
+with (OUTBOX / "build-meta.json").open("w+") as build_meta_file:
     json.dump(BUILD_META, build_meta_file, indent=2)
 
-with zipfile.ZipFile(OUTBOX / 'result.zip', 'x') as output_zip:
+with zipfile.ZipFile(OUTBOX / "result.zip", "x") as output_zip:
     for out_file in out_files:
         out_file: Path
         with output_zip.open(out_file.name, "w") as zip_entry:
             zip_entry.write(out_file.read_bytes())
-    with output_zip.open("build-meta.json", 'w') as zip_meta:
+    with output_zip.open("build-meta.json", "w") as zip_meta:
         zip_meta.write(json.dumps(BUILD_META, indent=2).encode())
-    with output_zip.open('build.log', 'w') as zip_log:
+    with output_zip.open("build.log", "w") as zip_log:
         zip_log.write("LOG COMING SOON".encode())

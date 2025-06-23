@@ -35,7 +35,7 @@ class VirtualFsDataType(IntEnum):
 
 
 def tar_basename(in_name):
-    tok = in_name.rsplit("/",1)
+    tok = in_name.rsplit("/", 1)
     if len(tok) > 1:
         return tok[1]
     else:
@@ -47,23 +47,23 @@ class VirtualFS(object):
     version: int = 1
     revision: int = 1
     root_file_id: Optional[int] = None
-    root_directory: Optional['VirtualFSDirectory'] = None
+    root_directory: Optional["VirtualFSDirectory"] = None
     fs_dir: Optional[Path] = None
     next_file_id: int = 1
-    max_size: int = 2 ** 30
+    max_size: int = 2**30
     file_size_blocks: int = 0
     block_size: int = 4096
 
     def to_dict(self):
         return {
-            'Version': self.version,
-            'Revision': self.revision,
-            'NextFileID': "%x" % self.next_file_id,
-            'FSFileCount': "%x" % (self.next_file_id - 1),
-            'FSSize': self.file_size_blocks * self.block_size,
-            'FSMaxSize': int(self.max_size),
-            'Key': "",  # TODO: Figure out what this is for
-            'RootID': self.root_file_id
+            "Version": self.version,
+            "Revision": self.revision,
+            "NextFileID": "%x" % self.next_file_id,
+            "FSFileCount": "%x" % (self.next_file_id - 1),
+            "FSSize": self.file_size_blocks * self.block_size,
+            "FSMaxSize": int(self.max_size),
+            "Key": "",  # TODO: Figure out what this is for
+            "RootID": self.root_file_id,
         }
 
     def assign_file_id(self):
@@ -72,9 +72,8 @@ class VirtualFS(object):
         return file_id
 
     def bytes_to_blocks(self, bytes_count):
-        return (
-                (bytes_count // self.block_size) +
-                (1 if bytes_count % self.block_size else 0)
+        return (bytes_count // self.block_size) + (
+            1 if bytes_count % self.block_size else 0
         )
 
     def count_file_size(self, byte_count: int):
@@ -82,12 +81,10 @@ class VirtualFS(object):
 
     def path_for_file(self, file_id: int) -> Path:
         assert self.fs_dir is not None
-        return self.fs_dir / 'files' / ('%016x' % file_id)
+        return self.fs_dir / "files" / ("%016x" % file_id)
 
     def _head_text(self):
-        return "\n".join(
-            [f"{k}: {v}" for k, v in self.to_dict().items()] + [""]
-        )
+        return "\n".join([f"{k}: {v}" for k, v in self.to_dict().items()] + [""])
 
     def from_path(self, path: Path):
         self.root_file_id = self.assign_file_id()
@@ -104,12 +101,12 @@ class VirtualFS(object):
         self.fs_dir.mkdir(exist_ok=True)
         if not self.root_file_id:
             self.root_file_id = self.assign_file_id()
-        lock_file = self.fs_dir / 'lock'
+        lock_file = self.fs_dir / "lock"
         lock_file.touch(exist_ok=True)
-        files_path = self.fs_dir / 'files'
+        files_path = self.fs_dir / "files"
         files_path.mkdir(exist_ok=True)
         self.root_directory.render_to_dir(files_path)
-        head_file = self.fs_dir / 'head'
+        head_file = self.fs_dir / "head"
         head_file.write_text(self._head_text())
 
 
@@ -132,12 +129,24 @@ class VirtualFSObject(abc.ABC):
 
     def dir_entry(self):
         return "%06o %d %d %d.%d %s" % (
-            self.get_mode(), self.node_uid, self.node_gid, self.node_mtime, self.node_mtime_nanos, self.node_filename)
+            self.get_mode(),
+            self.node_uid,
+            self.node_gid,
+            self.node_mtime,
+            self.node_mtime_nanos,
+            self.node_filename,
+        )
 
     def _dir_entry_with_size(self):
         return "%06o %d %d %d %d.%d %s" % (
-            self.get_mode(), self.node_uid, self.node_gid, self.get_size(), self.node_mtime, self.node_mtime_nanos,
-            self.node_filename)
+            self.get_mode(),
+            self.node_uid,
+            self.node_gid,
+            self.get_size(),
+            self.node_mtime,
+            self.node_mtime_nanos,
+            self.node_filename,
+        )
 
     def render_to_dir(self, files_dir: Path) -> None:
         pass
@@ -158,7 +167,7 @@ class VirtualFSObject(abc.ABC):
 
     @staticmethod
     @final
-    def from_path(fs: VirtualFS, path: Path, recursive=False) -> 'VirtualFSObject':
+    def from_path(fs: VirtualFS, path: Path, recursive=False) -> "VirtualFSObject":
         if path.is_symlink():
             return VirtualFSSymlink.entity_from_path(fs, path, recursive)
         elif path.is_file():
@@ -177,7 +186,7 @@ class VirtualFSObject(abc.ABC):
             raise ValueError(f"Unexpected filetype found: {path}")
 
     @staticmethod
-    def get_cls_for(source: Union[Path,TarFile,TarInfo]):
+    def get_cls_for(source: Union[Path, TarFile, TarInfo]):
         if isinstance(source, Path):
             if source.is_symlink():
                 return VirtualFSSymlink
@@ -210,12 +219,14 @@ class VirtualFSObject(abc.ABC):
             elif source.isfifo():
                 return VirtualFSFifo
             else:
-                raise ValueError(f"Unable to determine virtFS type for tarinfo {source}",)
+                raise ValueError(
+                    f"Unable to determine virtFS type for tarinfo {source}",
+                )
         else:
             raise ValueError(f"Unexpected type {type(source)} for virtfs entity ")
 
     @classmethod
-    def entity_from(cls, fs, source: Union[Path,TarFile,TarInfo], recursive=False):
+    def entity_from(cls, fs, source: Union[Path, TarFile, TarInfo], recursive=False):
         if isinstance(source, TarFile):
             return VirtualFSDirectory.entity_from_path(fs, source, recursive)
         cls_tgt = cls.get_cls_for(source)
@@ -228,7 +239,7 @@ class VirtualFSObject(abc.ABC):
 
     @classmethod
     @abstractmethod
-    def entity_from_path(cls, fs, path: Path, recursive=False) -> 'VirtualFSObject':
+    def entity_from_path(cls, fs, path: Path, recursive=False) -> "VirtualFSObject":
         raise NotImplementedError
 
     @classmethod
@@ -242,7 +253,7 @@ class VirtualFSFifo(VirtualFSObject):
     _node_type = VirtualFsDataType.FIFO
 
     @classmethod
-    def entity_from_path(cls, fs, path: Path, recursive=False) -> 'VirtualFSObject':
+    def entity_from_path(cls, fs, path: Path, recursive=False) -> "VirtualFSObject":
         obj = cls(fs)
         obj._load_from_stat(path.stat())
         obj.node_filename = path.name
@@ -263,11 +274,16 @@ class VirtualFSCharDev(VirtualFSObject):
     node_dev_minor: int = 0
 
     def dir_entry(self):
-        return "%06o %d %d %d %d %d.%d %s" % (self.get_mode(),
-                                              self.node_uid, self.node_gid,
-                                              self.node_dev_major, self.node_dev_minor,
-                                              self.node_mtime, self.node_mtime_nanos,
-                                              self.node_filename)
+        return "%06o %d %d %d %d %d.%d %s" % (
+            self.get_mode(),
+            self.node_uid,
+            self.node_gid,
+            self.node_dev_major,
+            self.node_dev_minor,
+            self.node_mtime,
+            self.node_mtime_nanos,
+            self.node_filename,
+        )
 
     def _load_from_stat(self, stat_obj: stat_result):
         super()._load_from_stat(stat_obj)
@@ -280,7 +296,7 @@ class VirtualFSCharDev(VirtualFSObject):
         self.node_dev_minor = tarinfo.devminor
 
     @classmethod
-    def entity_from_path(cls, fs, path: Path, recursive=False) -> 'VirtualFSObject':
+    def entity_from_path(cls, fs, path: Path, recursive=False) -> "VirtualFSObject":
         obj = cls(fs)
         path_stat = path.stat()
         obj._load_from_stat(path_stat)
@@ -293,7 +309,6 @@ class VirtualFSCharDev(VirtualFSObject):
         obj._load_from_tarinfo(tarinfo)
         obj.node_filename = tar_basename(tarinfo.name)
         return obj
-
 
 
 @dataclass
@@ -323,10 +338,7 @@ class VirtualFSDirectory(VirtualFSObject):
         return self._fs.root_directory == self
 
     def _header_text(self):
-        return \
-            f"Version: {self._fs.version}\n" \
-            f"Revision: {self._fs.revision}\n" \
-            "\n"
+        return f"Version: {self._fs.version}\n" f"Revision: {self._fs.revision}\n" "\n"
 
     def render_to_dir(self, files_dir: Path) -> None:
         # If we are the root FS, we need to render the file tree
@@ -343,16 +355,20 @@ class VirtualFSDirectory(VirtualFSObject):
             child.render_to_dir(files_dir)
 
     @classmethod
-    def entity_from_path(cls, fs, path: Union[Path,TarFile], recursive=False) -> 'VirtualFSDirectory':
+    def entity_from_path(
+        cls, fs, path: Union[Path, TarFile], recursive=False
+    ) -> "VirtualFSDirectory":
         obj = cls(fs)
         if isinstance(path, Path):
             obj._load_from_stat(path.stat())
             obj.node_filename = path.name
             if recursive:
-                obj.children = [VirtualFSObject.from_path(fs, f, recursive) for f in path.iterdir()]
+                obj.children = [
+                    VirtualFSObject.from_path(fs, f, recursive) for f in path.iterdir()
+                ]
         elif isinstance(path, TarFile):
             obj.__tar_file = path
-            root_member = path.getmember('.')
+            root_member = path.getmember(".")
             obj._load_from_tarinfo(root_member)
             # A tarfile's filename is always the root, which has no true name.
             obj.node_filename = "."
@@ -368,7 +384,7 @@ class VirtualFSDirectory(VirtualFSObject):
         self.__tar_tree = {}
         for member in tar_file.getmembers():
             member: TarInfo
-            tokens = member.path.rsplit("/",1)
+            tokens = member.path.rsplit("/", 1)
             if len(tokens) > 1:
                 member_path = tokens[0]
                 member_name = tokens[1]
@@ -385,7 +401,10 @@ class VirtualFSDirectory(VirtualFSObject):
 
     def __tar_children(self):
         if self.__tar_base in self.__tar_tree:
-            return [ self.__tar_file.getmember(self.__tar_base + "/" + f) for f in  self.__tar_tree[self.__tar_base] ]
+            return [
+                self.__tar_file.getmember(self.__tar_base + "/" + f)
+                for f in self.__tar_tree[self.__tar_base]
+            ]
         else:
             # Empty Directory
             return []
@@ -394,7 +413,9 @@ class VirtualFSDirectory(VirtualFSObject):
         for child in self.__tar_children():
             child: TarInfo
             if child.isdir():
-                child_dir = VirtualFSDirectory.entity_from_tarinfo(self._fs, child, False)
+                child_dir = VirtualFSDirectory.entity_from_tarinfo(
+                    self._fs, child, False
+                )
                 child_dir.__tar_file = self.__tar_file
                 child_dir.__tar_tree = self.__tar_tree
                 child_dir.__tar_base = child.path
@@ -448,9 +469,13 @@ class VirtualFSFile(VirtualFSObject):
     def render_to_dir(self, files_dir: Path) -> None:
         if self.get_size() > 0:
             if self.__tar_info:
-                self._fs.path_for_file(self._node_file_id).write_bytes(self._fs.root_directory.tar_extract(self.__tar_info).read())
+                self._fs.path_for_file(self._node_file_id).write_bytes(
+                    self._fs.root_directory.tar_extract(self.__tar_info).read()
+                )
             elif self.__source_file:
-                shutil.copy(self.__source_file, self._fs.path_for_file(self._node_file_id))
+                shutil.copy(
+                    self.__source_file, self._fs.path_for_file(self._node_file_id)
+                )
             else:
                 raise ValueError(f"Could not get content for file {self.node_filename}")
             self._fs.count_file_size(self.get_size())
@@ -464,7 +489,9 @@ class VirtualFSFile(VirtualFSObject):
         self._node_size = tarinfo.size
 
     @classmethod
-    def entity_from_path(cls, fs: VirtualFS, path: Path, recursive=False) -> 'VirtualFSObject':
+    def entity_from_path(
+        cls, fs: VirtualFS, path: Path, recursive=False
+    ) -> "VirtualFSObject":
         obj = cls(fs)
         obj.__source_file = path
         path_stat = path.stat()
@@ -495,7 +522,7 @@ class VirtualFSSymlink(VirtualFSObject):
         return super().dir_entry() + (" %s" % self.target)
 
     @classmethod
-    def entity_from_path(cls, fs, path: Path, recursive=False) -> 'VirtualFSObject':
+    def entity_from_path(cls, fs, path: Path, recursive=False) -> "VirtualFSObject":
         obj = cls(fs)
         obj._load_from_stat(path.lstat())
         obj.node_filename = path.name
@@ -516,7 +543,7 @@ class VirtualFSSocket(VirtualFSObject):
     _node_type = VirtualFsDataType.SOCK
 
     @classmethod
-    def entity_from_path(cls, fs, path: Path, recursive=False) -> 'VirtualFSObject':
+    def entity_from_path(cls, fs, path: Path, recursive=False) -> "VirtualFSObject":
         obj = cls(fs)
         obj._load_from_stat(path.stat())
         obj.node_filename = path.name

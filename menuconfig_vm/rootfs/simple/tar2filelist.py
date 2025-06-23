@@ -6,8 +6,8 @@ from pprint import pprint as p
 
 # TODO: Make this all argparse-y
 
-in_tar = tarfile.open('buildroot/output/images/rootfs.tar')
+in_tar = tarfile.open("buildroot/output/images/rootfs.tar")
 
 vfs = VirtualFS()
 vfs.from_tar(in_tar)
-vfs.render_to_dir(Path('./httpfs'))
+vfs.render_to_dir(Path("./httpfs"))
