@@ -1,385 +1,407 @@
 <!doctype html>
 <html lang="en">
-<head>
+  <head>
     <title>kConfig - Klipper Build Service</title>
     <style>
-        body {
-            background-color: slategray
-        }
+      body {
+        background-color: slategray;
+      }
 
-        #page_container {
-            width: 800px;
-            margin: 0 auto;
-        }
+      #page_container {
+        width: 800px;
+        margin: 0 auto;
+      }
 
-        #terminal_container {
-            border: 20px darkgray solid;
-            border-bottom: 0;
-            border-top: 0;
-            border-radius: 5px;
-            box-shadow: 0 0 20px 0;
-            margin: 10px;
-            width: 740px;
-            min-height: 550px;
-            display: block;
-            background-color: darkgray;
-            padding-top: 2px;
-            padding-bottom: 2px;
-        }
+      #terminal_container {
+        border: 20px darkgray solid;
+        border-bottom: 0;
+        border-top: 0;
+        border-radius: 5px;
+        box-shadow: 0 0 20px 0;
+        margin: 10px;
+        width: 740px;
+        min-height: 550px;
+        display: block;
+        background-color: darkgray;
+        padding-top: 2px;
+        padding-bottom: 2px;
+      }
 
-        #terminal {
-            border: 10px black solid;
-            border-radius: 5px;
-            min-height: 510px;
-            background-color: black;
-        }
+      #terminal {
+        border: 10px black solid;
+        border-radius: 5px;
+        min-height: 510px;
+        background-color: black;
+      }
 
-        #terminal.blurred {
-            filter: blur(2px);
-        }
+      #terminal.blurred {
+        filter: blur(2px);
+      }
 
-        #form_v3_submit {
-            float: right;
-        }
+      #form_v3_submit {
+        float: right;
+      }
 
-        .modal_frame {
-            display: none;
-            z-index: 9999;
-            position: absolute;
-            width: 740px;
-            height: 530px;
-            margin-right: auto;
-            margin-bottom: auto;
-        }
+      .modal_frame {
+        display: none;
+        z-index: 9999;
+        position: absolute;
+        width: 740px;
+        height: 530px;
+        margin-right: auto;
+        margin-bottom: auto;
+      }
 
-        .modal_frame.modal_active {
-            display: initial;
-        }
+      .modal_frame.modal_active {
+        display: initial;
+      }
 
-        .modal_inner {
-            filter: none;
-            background-color: darkgray;
-            margin: 50px auto;
-            padding: 10px;
-            width: 250px;
-            text-align: center;
-            box-shadow: 5px 5px 20px 2px gray;
-        }
+      .modal_inner {
+        filter: none;
+        background-color: darkgray;
+        margin: 50px auto;
+        padding: 10px;
+        width: 250px;
+        text-align: center;
+        box-shadow: 5px 5px 20px 2px gray;
+      }
 
-        .modal_inner button {
-            width: 230px;
-            margin-top: 5px;
-        }
+      .modal_inner button {
+        width: 230px;
+        margin-top: 5px;
+      }
 
-        .modal_inner button :nth-of-type(1) {
-            margin-top: 0;
-        }
+      .modal_inner button :nth-of-type(1) {
+        margin-top: 0;
+      }
 
-        #status_bar {
-            padding-left: 4px;
-        }
+      #status_bar {
+        padding-left: 4px;
+      }
 
-        .led {
-            display: inline-flex;
-            width: 20px;
-            height: 10px;
-            background-color: #002F00;
-            vertical-align: center;
-        }
+      .led {
+        display: inline-flex;
+        width: 20px;
+        height: 10px;
+        background-color: #002f00;
+        vertical-align: center;
+      }
 
-        .led.led_on {
-            background-color: #009F00;
-            box-shadow: inset 0 0 2px 1px;
-            vertical-align: central;
-        }
+      .led.led_on {
+        background-color: #009f00;
+        box-shadow: inset 0 0 2px 1px;
+        vertical-align: central;
+      }
 
-        .led.led_amber {
-            background-color: #443200
-        }
+      .led.led_amber {
+        background-color: #443200;
+      }
 
-        .led.led_amber.led_on {
-            background-color: #CC8800
-        }
+      .led.led_amber.led_on {
+        background-color: #cc8800;
+      }
 
-        .led.led_red {
-            background-color: #300;
-        }
+      .led.led_red {
+        background-color: #300;
+      }
 
-        .led.led_red.led_on {
-            background-color: #C00;
-        }
+      .led.led_red.led_on {
+        background-color: #c00;
+      }
 
-        .led_label {
-            display: inline-block;
-            color: #444;
-            font-size: 10pt;
-            vertical-align: center;
-            position: relative;
-            top: -1px;
-            right: -2px;
-            font-family: monospace;
-        }
+      .led_label {
+        display: inline-block;
+        color: #444;
+        font-size: 10pt;
+        vertical-align: center;
+        position: relative;
+        top: -1px;
+        right: -2px;
+        font-family: monospace;
+      }
 
-        .led_frame {
-            display: inline-block;
-            width: 55px;
-        }
+      .led_frame {
+        display: inline-block;
+        width: 55px;
+      }
 
-        #version_icon_container {
-            width: 88px;
-            height: 88px;
-            background-color: rgba(255,255,255,.5);
-            border-radius: 50px;
-            margin: 6px;
-            box-shadow: 0 0 20px #444;
-        }
+      #version_icon_container {
+        width: 88px;
+        height: 88px;
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 50px;
+        margin: 6px;
+        box-shadow: 0 0 20px #444;
+      }
 
-        #version_icon {
-            width: 85px;
-            height: 85px;
-            position: relative;
-            left: 2px;
-            top: 2px;
-        }
+      #version_icon {
+        width: 85px;
+        height: 85px;
+        position: relative;
+        left: 2px;
+        top: 2px;
+      }
 
-        .hidden {
-            display: none;
-        }
+      .hidden {
+        display: none;
+      }
 
-        #selector_container {
-            display: block;
-            text-align: center;
-            width: inherit;
-            margin-bottom: 20px;
-        }
+      #selector_container {
+        display: block;
+        text-align: center;
+        width: inherit;
+        margin-bottom: 20px;
+      }
 
-        .selector_card {
-            vertical-align: middle;
-            text-align: initial;
-            display: inline-block;
-            width: 350px;
-            height: 120px;
-            background-color: #CCC;
-            margin-left: 10px;
-            border-radius: 14px 14px 10px 10px;
-        }
+      .selector_card {
+        vertical-align: middle;
+        text-align: initial;
+        display: inline-block;
+        width: 350px;
+        height: 120px;
+        background-color: #ccc;
+        margin-left: 10px;
+        border-radius: 14px 14px 10px 10px;
+      }
 
-        .selector_card :nth-of-type(1) {
-            margin-left: 0;
-        }
+      .selector_card :nth-of-type(1) {
+        margin-left: 0;
+      }
 
-        .selector_header {
-            width: inherit;
-            height: 18px;
-            padding-top: 2px;
-            background-color: #505050;
-            font-family: monospace;
-            font-variant-caps: small-caps;
-            border-radius: 10px 10px 0 0;
-            text-align: center;
-            color: #DDD;
-        }
+      .selector_header {
+        width: inherit;
+        height: 18px;
+        padding-top: 2px;
+        background-color: #505050;
+        font-family: monospace;
+        font-variant-caps: small-caps;
+        border-radius: 10px 10px 0 0;
+        text-align: center;
+        color: #ddd;
+      }
 
-        .selector_header::before, .selector_header::after {
-            content: '\2014';
-            padding: 0 4px;
-        }
+      .selector_header::before,
+      .selector_header::after {
+        content: "\2014";
+        padding: 0 4px;
+      }
 
-        .selector_row {
-            margin-top: 3px;
-        }
+      .selector_row {
+        margin-top: 3px;
+      }
 
-        .fancy_radio_button {
-            display: inline-block;
-        }
+      .fancy_radio_button {
+        display: inline-block;
+      }
 
-        .fancy_radio_button input {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-            height: 0;
-            width: 0;
-        }
+      .fancy_radio_button input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+      }
 
-        .fancy_radio_button ~ label {
-            display: inline-block;
-            min-width: 20px;
-            height: 23px;
-            background-color: #DDD;
-            border: #505050 1px solid;
-            margin-left: 0;
-            margin-right: 0;
-            padding: 0 3px;
-            font-size: 18px;
-        }
+      .fancy_radio_button ~ label {
+        display: inline-block;
+        min-width: 20px;
+        height: 23px;
+        background-color: #ddd;
+        border: #505050 1px solid;
+        margin-left: 0;
+        margin-right: 0;
+        padding: 0 3px;
+        font-size: 18px;
+      }
 
-        .fancy_button_group .fancy_radio_button:first-of-type label {
-            border-bottom-left-radius: 7px;
-            border-top-left-radius: 7px;
-        }
+      .fancy_button_group .fancy_radio_button:first-of-type label {
+        border-bottom-left-radius: 7px;
+        border-top-left-radius: 7px;
+      }
 
-        .fancy_button_group .fancy_radio_button:last-of-type label {
-            border-bottom-right-radius: 7px;
-            border-top-right-radius: 7px;
-        }
+      .fancy_button_group .fancy_radio_button:last-of-type label {
+        border-bottom-right-radius: 7px;
+        border-top-right-radius: 7px;
+      }
 
-        .fancy_radio_button:checked ~ label {
-            background-color: #505050;
-            color: #DDD;
-        }
+      .fancy_radio_button:checked ~ label {
+        background-color: #505050;
+        color: #ddd;
+      }
 
-        #v4_version_gitsha, #v4_version_major, #v4_version_patch {
-            font-family: monospace;
-        }
+      #v4_version_gitsha,
+      #v4_version_major,
+      #v4_version_patch {
+        font-family: monospace;
+      }
 
-        #v4_version_gitsha {
-            width: 65px;
-        }
+      #v4_version_gitsha {
+        width: 65px;
+      }
 
-        .selector_identicon {
-            display: block;
-            float: left;
-            height: 100px;
-            width: 100px;
-        }
+      .selector_identicon {
+        display: block;
+        float: left;
+        height: 100px;
+        width: 100px;
+      }
 
-        .selector_main {
-            width: 245px;
-            padding-left: 5px;
-            display: block;
-            padding-top: 2px;
-            text-align: center;
-            float: right;
-        }
-
-
+      .selector_main {
+        width: 245px;
+        padding-left: 5px;
+        display: block;
+        padding-top: 2px;
+        text-align: center;
+        float: right;
+      }
     </style>
-</head>
-<body onload="kbs_init()">
-<div id="page_container">
-    <h1>KBS Online Menuconfig</h1>
-    <div id="selector_container">
+  </head>
+  <body onload="kbs_init()">
+    <div id="page_container">
+      <h1>KBS Online Menuconfig</h1>
+      <div id="selector_container">
         <div id="klipper_selector" class="selector_card">
-            <div class="selector_header">Klipper Version</div>
-            <div class="selector_identicon">
-                <div id="version_icon_container" class="identicon_container">
+          <div class="selector_header">Klipper Version</div>
+          <div class="selector_identicon">
+            <div id="version_icon_container" class="identicon_container"></div>
+          </div>
+          <div class="selector_main">
+            <div class="selector_row">
+              <div class="fancy_button_group">
+                <div class="fancy_radio_button">
+                  <input
+                    type="radio"
+                    name="v4_variant"
+                    value="klipper"
+                    id="v4_variant_klipper"
+                    class="fancy_radio_button"
+                    checked
+                  /><label for="v4_variant_klipper">Klipper</label>
                 </div>
+                <div class="fancy_radio_button">
+                  <input
+                    type="radio"
+                    name="v4_variant"
+                    value="kalico"
+                    id="v4_variant_kalico"
+                    class="fancy_radio_button"
+                  /><label for="v4_variant_kalico">Kalico</label>
+                </div>
+              </div>
             </div>
-            <div class="selector_main">
-                <div class="selector_row">
-                    <div class="fancy_button_group">
-                        <div class="fancy_radio_button"><input type="radio" name="v4_variant" value="klipper"
-                                                               id="v4_variant_klipper"
-                                                               class="fancy_radio_button" checked/><label
-                                for="v4_variant_klipper">Klipper</label>
-                    </div><div class="fancy_radio_button"><input type="radio" name="v4_variant" value="kalico"
-                                                               id="v4_variant_kalico" class="fancy_radio_button"/><label
-                                for="v4_variant_kalico">Kalico</label></div>
-                    </div>
-                </div>
-                <div class="selector_row">
-                    <select id="v4_version_major" aria-label="Major Version">
-                        <option>v0.13.0</option>
-                        <option>v0.12.0</option>
-                        <option>v0.11.0</option>
-                        <option>v0.10.0</option>
-                    </select>
-                    -
-                    <select id="v4_version_patch" aria-label="Patch Version">
-                        <option>Latest</option>
-                        <option>Release</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                        <option>6</option>
-                        <option>7</option>
-                        <option>8</option>
-                        <option>9</option>
-                        <option>10</option>
-                        <option>11</option>
-                        <option>12</option>
-                        <option>13</option>
-                        <option>14</option>
-                        <option>15</option>
-                        <option>16</option>
-                        <option>17</option>
-                        <option>18</option>
-                        <option>19</option>
-                        <option>20</option>
-                        <option>21-MMMMMMMM</option>
-                    </select>
-                </div>
-                <div class="selector_row">
-                    Menu structure: <span>TBD</span>
-                </div>
+            <div class="selector_row">
+              <select id="v4_version_major" aria-label="Major Version">
+                <option>v0.13.0</option>
+                <option>v0.12.0</option>
+                <option>v0.11.0</option>
+                <option>v0.10.0</option>
+              </select>
+              -
+              <select id="v4_version_patch" aria-label="Patch Version">
+                <option>Latest</option>
+                <option>Release</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+                <option>13</option>
+                <option>14</option>
+                <option>15</option>
+                <option>16</option>
+                <option>17</option>
+                <option>18</option>
+                <option>19</option>
+                <option>20</option>
+                <option>21-MMMMMMMM</option>
+              </select>
             </div>
+            <div class="selector_row">Menu structure: <span>TBD</span></div>
+          </div>
         </div>
         <div id="config_selector" class="selector_card">
-            <div class="selector_header">Starting Config</div>
-            Lorem Ipsum dolor sit amet!
+          <div class="selector_header">Starting Config</div>
+          Lorem Ipsum dolor sit amet!
         </div>
-    </div>
-    <div id="terminal_container">
+      </div>
+      <div id="terminal_container">
         <div id="control_strip">
-            <form id="kconfig_form_v3">
-                <select aria-label="klipper variant" id="form_v3_upstream">
-                    <option value="klipper" selected>Klipper</option>
-                    <option value="kalico">Kalico</option>
-                </select>
-                <select aria-label="version" id="form_v3_version">
-                    <option selected disabled>Loading...</option>
-                </select>
-                <input type="radio" id="form_v3_config_scratch" name="form_v3_config" checked/>
-                <label for="form_v3_config_scratch">Empty</label>
-                <input type="radio" id="form_v3_config_file" name="form_v3_config"/>
-                <label for="form_v3_config_file">File</label>
-                <input type="file" id="form_v3_config_file_chooser"/>
-                <button id="form_v3_submit">Go!</button>
-            </form>
+          <form id="kconfig_form_v3">
+            <select aria-label="klipper variant" id="form_v3_upstream">
+              <option value="klipper" selected>Klipper</option>
+              <option value="kalico">Kalico</option>
+            </select>
+            <select aria-label="version" id="form_v3_version">
+              <option selected disabled>Loading...</option>
+            </select>
+            <input
+              type="radio"
+              id="form_v3_config_scratch"
+              name="form_v3_config"
+              checked
+            />
+            <label for="form_v3_config_scratch">Empty</label>
+            <input
+              type="radio"
+              id="form_v3_config_file"
+              name="form_v3_config"
+            />
+            <label for="form_v3_config_file">File</label>
+            <input type="file" id="form_v3_config_file_chooser" />
+            <button id="form_v3_submit">Go!</button>
+          </form>
         </div>
         <div id="terminal_container_inner">
-            <div id="modal_config_done" class="modal_frame">
-                <div class="modal_inner">
-                    <header>Configuration Generated!</header>
-                    <button onclick="download_config('klipper.config');discard_config();">Download</button>
-                    <button onclick="reconfigure()">Edit</button>
-                    <button disabled>Queue online build (coming soon)</button>
-                    <button onclick="discard_config()">Discard</button>
-                </div>
+          <div id="modal_config_done" class="modal_frame">
+            <div class="modal_inner">
+              <header>Configuration Generated!</header>
+              <button
+                onclick="download_config('klipper.config');discard_config();"
+              >
+                Download
+              </button>
+              <button onclick="reconfigure()">Edit</button>
+              <button disabled>Queue online build (coming soon)</button>
+              <button onclick="discard_config()">Discard</button>
             </div>
-            <div id="terminal"></div>
+          </div>
+          <div id="terminal"></div>
         </div>
         <div id="status_bar">
-            <div class="led_frame">
-                <div class="led" id="led_on"></div>
-                <span class="led_label">PWR</span>
-            </div>
-            <div class="led_frame">
-                <div class="led led_amber" id="led_working"></div>
-                <span class="led_label">WRK</span>
-            </div>
-            <div class="led_frame">
-                <div class="led led_red" id="led_access"></div>
-                <span class="led_label">ACC</span>
-            </div>
-            <div class="hidden">
-                VM State: <span id="vm_state_text">OFF</span>
-            </div>
+          <div class="led_frame">
+            <div class="led" id="led_on"></div>
+            <span class="led_label">PWR</span>
+          </div>
+          <div class="led_frame">
+            <div class="led led_amber" id="led_working"></div>
+            <span class="led_label">WRK</span>
+          </div>
+          <div class="led_frame">
+            <div class="led led_red" id="led_access"></div>
+            <span class="led_label">ACC</span>
+          </div>
+          <div class="hidden">
+            VM State: <span id="vm_state_text">OFF</span>
+          </div>
         </div>
-    </div>
-    </div>
-    <p>
+      </div>
+      <p>
         This tool makes use of
         <a href="https://bellard.org/tinyemu">JSLinux</a>,
         <a href="https://xtermjs.org/">xterm.js</a>.
-    </p>
-    <link rel="stylesheet" href="xterm/css/xterm.css">
-    <script src="xterm/lib/xterm.js"></script>
-    <script src="jslinux/jslinux-core.js"></script>
-    <script src="kbs_revdb.js"></script>
-    <script src="kbs_menuconfig.js"></script>
-</div>
-</body>
+      </p>
+      <link rel="stylesheet" href="xterm/css/xterm.css" />
+      <script src="xterm/lib/xterm.js"></script>
+      <script src="jslinux/jslinux-core.js"></script>
+      <script src="kbs_revdb.js"></script>
+      <script src="kbs_menuconfig.js"></script>
+    </div>
+  </body>
 </html>
