@@ -1,1 +1,3 @@
-/.venv
+*.stamp
+/kbs_menuconfig.d/
+/kbs_menuconfig

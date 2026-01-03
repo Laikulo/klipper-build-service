@@ -31,7 +31,7 @@ When you are ready, press [Go!]
 def main():
     logger.info(f"KBS Menuconfig v{KBS_VER} starting up...")
     # We import this during startup, so that we don't have a delay in the user critical path
-    import menuconfig
+    from kconfiglib import menuconfig
     import termios
     import tty
     import tarfile
