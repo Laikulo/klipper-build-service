@@ -3,7 +3,7 @@ all: buildroot/output/images/rootfs.tar httpfs/head
 
 buildroot/output/images/rootfs.tar: br-all
 
-br-%: patches/busybox/embed.patch root-overlay/bin/kbs_menuconfig root-overlay/bin/menuconfig_kcl buildroot/.config
+br-%: patches/busybox/embed.patch root-overlay/bin/kbs_menuconfig buildroot/.config
 	make -C buildroot $*
 
 buildroot/.config:
@@ -22,10 +22,8 @@ root-overlay/bin:
 	mkdir root-overlay/bin
 
 root-overlay/bin/kbs_menuconfig: root-overlay/bin
-	cp ../../../kbs_menuconfig/kbs_menuconfig.py $@
-
-root-overlay/bin/menuconfig_kcl: root-overlay/bin
-	cp ../../../kconfiglib/menuconfig_kcl $@
+	make -C ../../../kbs_menuconfig
+	cp ../../../kbs_menuconfig/kbs_menuconfig $@
 
 web:
 	rsync -r --delete httpfs/ ../../../web/public/fs/tartest/
