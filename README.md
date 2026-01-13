@@ -10,6 +10,12 @@ A service that given a ref-ish and a kconfig, produces compiled binaries
 
 Current Capabilities: Build in a networkless nonprivileged container.
 
+```
+mkdir inbox outbox
+cp ~/Downloads/klipper.config inbox/Kconfig
+podman run --rm -it --net=none --mount=type=image,src=ghcr.io/laikulo/klipper-build-service/kbs_gitref:latest,dst=/media/git -v $PWD/inbox:/media/inbox:ro,z -v $PWD/outbox:/media/outbox:rw,z --userns=keep-id:uid=1000 ghcr.io/laikulo/klipper-build-service/kbs_buildenv:latest klipper v0.13.0
+```
+
 Next steps: confirm that bugfixes in gvisor means that they now map properly when running nonprivileged gvisor
 
 ### Menuconfig in the browser
