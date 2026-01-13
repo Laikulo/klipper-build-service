@@ -3,6 +3,7 @@ set -xe
 
 gitref_path="$(realpath "$1")"
 bin_dir="$(realpath "$(dirname "$0")")"
+projects=(klipper kalico the)
 
 
 function do_project {
@@ -27,6 +28,6 @@ function do_project {
 
 rm -rf pub/*
 
-do_project klipper "pub/klipper.csv" pub/kconfig-bundles/klipper
-
-do_project kalico "pub/kalico.csv" pub/kconfig-bundles/kalico
+for project in "${projects[@]}"; do
+	do_project "$project"  "pub/${project}.csv" pub/kconfig-bundles/"$project"
+done
