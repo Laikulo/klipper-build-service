@@ -3,19 +3,36 @@
 set -xe
 shopt -s globstar nullglob
 
+typeset -A projects
+projects=(
+	[klipper]=https://github.com/klipper3d/klipper.git 
+	[kalico]=https://github.com/KalicoCrew/kalico.git
+	[the]=https://github.com/MSzturc/klipper.git
+)
+
+if [[ $1 == "--push" ]]; then
+	will_push="yes"
+else
+	will_push=""
+fi
+
 script_dir="$(dirname "$0")"
 # We're not meant to be sourced, so we can do whatever we want to the wd
 cd "$script_dir"
 
 if [[ ! -d gitref.git ]]; then
-    git init --bare gitref.git
+	git init --bare gitref.git
 fi
 cd gitref.git
-git fetch https://github.com/klipper3d/klipper.git --no-tags --no-write-fetch-head '+rfs/heads/*:refs/heads/klipper/*' '+refs/tags/*:refs/tags/klipper/*' '+HEAD:refs/heads/klipper/REMOTE_HEAD'
-git fetch https://github.com/KalicoCrew/kalico.git --no-tags --no-write-fetch-head '+refs/heads/*:refs/heads/kalico/*' '+refs/tags/*:refs/tags/kalico/*' '+HEAD:refs/heads/kalico/REMOTE_HEAD'
+for project in "${!projects[@]}"; do
+	git fetch "${projects[$project]}" --no-tags --no-write-fetch-head "+refs/heads/*:refs/heads/${project}/*" "+refs/tags/*:refs/tags/${project}/*" "+HEAD:refs/heads/${project}/REMOTE_HEAD"
+done
 git repack -a -l -d
+git pack-refs --all
 tar -cvf ../gitref.git.tar --owner root:0 --group root:0 --format=ustar -- *
 cd ..
 image_hash="$(podman import gitref.git.tar)"
 podman tag "$image_hash" ghcr.io/laikulo/klipper-build-service/kbs_gitref:latest
-podman push ghcr.io/laikulo/klipper-build-service/kbs_gitref:latest
+if [[ $will_push ]]; then
+	podman push ghcr.io/laikulo/klipper-build-service/kbs_gitref:latest
+fi

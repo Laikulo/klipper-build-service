@@ -1,34 +1,46 @@
-FROM bitnami/minideb:bookworm AS pruchain_downloader
-RUN install_packages git ca-certificates wget lbzip2 xz-utils
+ARG BASE_IMAGE=docker.io/library/debian:trixie-slim
+
+FROM $BASE_IMAGE AS pruchain_downloader
+RUN \
+	apt-get update && \
+	apt-get install -y git ca-certificates wget lbzip2 xz-utils && \
+	apt-get clean
 RUN git clone https://github.com/dinuxbg/gnupru -b 2024.05 --depth 1 /usr/src/gnupru
 WORKDIR /usr/src/gnupru
 ENV PREFIX=/opt/gnupru
 RUN ./download-and-prepare.sh
 
-FROM bitnami/minideb:bookworm AS pruchain_builder
-RUN install_packages git pv ca-certificates wget lbzip2 xz-utils gcc build-essential file texinfo libgmp-dev libmpfr-dev libmpc-dev
+FROM $BASE_IMAGE AS pruchain_builder
+RUN \
+	apt-get update && \
+	apt-get install -y git pv ca-certificates wget lbzip2 xz-utils gcc build-essential file texinfo libgmp-dev libmpfr-dev libmpc-dev && \
+	apt-get clean
 COPY --from=pruchain_downloader /usr/src/gnupru /usr/src/gnupru/
 WORKDIR /usr/src/gnupru
 ENV PREFIX=/opt/gnupru
 RUN ./build.sh
 
-FROM bitnami/minideb:bookworm AS or1k_downloader
-RUN install_packages curl ca-certificates
+FROM $BASE_IMAGE AS or1k_downloader
+RUN \
+	apt-get update && \
+	apt-get install -y curl ca-certificates && \
+	apt-get clean
 RUN curl -L# 'https://more.musl.cc/10/x86_64-linux-musl/or1k-linux-musl-cross.tgz' | tar -C /opt -xz
 
-FROM bitnami/minideb:bookworm AS kbs_buildarea
+FROM $BASE_IMAGE AS kbs_buildarea
 RUN \
     groupadd -g 1000 klipper &&\
     useradd -m -d /home/klipper -u 1000 -g klipper klipper
 WORKDIR /home/klipper
 RUN \
-    install_packages \
-      make git python3.11 binutils curl ca-certificates \
-      libnewlib-arm-none-eabi gcc-arm-none-eabi binutils-arm-none-eabi cpp g++ \
-      gcc-avr avr-libc \
-      libc6-dev gcc \
-      libmpc3 libgmp10 libmpfr6
-RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 311
+	apt-get update && \
+	apt-get install -y \
+		make git python3 binutils curl ca-certificates \
+		libnewlib-arm-none-eabi gcc-arm-none-eabi binutils-arm-none-eabi cpp g++ \
+		gcc-avr avr-libc \
+		libc6-dev gcc \
+		libmpc3 libgmp10 libmpfr6 && \
+	apt-get clean
 COPY --from=or1k_downloader /opt/or1k-linux-musl-cross /opt/or1k-linux-musl-cross/
 COPY --from=pruchain_builder /opt/gnupru /opt/gnupru/
 ENV PATH=${PATH}:/opt/:/opt/gnupru/bin:/opt/or1k-linux-musl-cross/bin
