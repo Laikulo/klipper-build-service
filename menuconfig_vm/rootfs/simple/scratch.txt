@@ -1,0 +1,1 @@
+microdnf install wget gcc which ncurses ncurses-devel file perl bzip2 tar cpio rsync bc patch jq
