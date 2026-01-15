@@ -29,6 +29,6 @@ web:
 	rsync -r --delete httpfs/ ../../../web/public/fs/tartest/
 
 httpfs/head: buildroot/output/images/rootfs.tar
-	python3.11 ./tar2filelist.py
+	./tar2filelist.py
 
 .PHONY: all br-% busybox-config

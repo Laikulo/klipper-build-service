@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.11
+#!/usr/bin/env python3
 from tinyemu_filelist import VirtualFS
 import tarfile
 from pathlib import Path
