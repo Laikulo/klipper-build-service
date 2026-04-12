@@ -1,0 +1,15 @@
+FROM debian:trixie-slim as gitref-builder
+RUN \
+	apt-get update && \
+	apt-get upgrade -y && \
+	apt-get install -y git && \
+	useradd -m build
+ADD build /usr/local/bin
+USER build
+WORKDIR /home/build
+
+FROM gitref-builder as workspace
+RUN build
+
+FROM scratch as gitref
+COPY --from=workspace --chown=0 --chmod=644 /home/build/gitref.git /

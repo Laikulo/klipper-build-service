@@ -16,10 +16,6 @@ else
 	will_push=""
 fi
 
-script_dir="$(dirname "$0")"
-# We're not meant to be sourced, so we can do whatever we want to the wd
-cd "$script_dir"
-
 if [[ ! -d gitref.git ]]; then
 	git init --bare gitref.git
 fi
@@ -29,10 +25,4 @@ for project in "${!projects[@]}"; do
 done
 git repack -a -l -d
 git pack-refs --all
-tar -cvf ../gitref.git.tar --owner root:0 --group root:0 --format=ustar -- *
-cd ..
-image_hash="$(podman import gitref.git.tar)"
-podman tag "$image_hash" ghcr.io/laikulo/klipper-build-service/kbs_gitref:latest
-if [[ $will_push ]]; then
-	podman push ghcr.io/laikulo/klipper-build-service/kbs_gitref:latest
-fi
+#tar -cvf ../gitref.git.tar --owner root:0 --group root:0 --format=ustar -- *
