@@ -5,11 +5,12 @@ rev_info_tool="$(dirname "$0")/rev-info"
 
 klipper_tree="${1:-$PWD}"
 to_rev="${2:-origin/HEAD}"
+from_rev="${3:-v0.10.0}"
 
 
 export GIT_WORK_TREE="$klipper_tree" GIT_DIR="$klipper_tree/.git"
 git fetch --all
-for rev in $(git rev-list --reverse 'v0.10.0^..'"$to_rev"); do
+for rev in $(git rev-list --reverse "$from_rev"'^..'"$to_rev"); do
     git reset --hard "$rev" -q
     "$rev_info_tool" "$klipper_tree"
 done
