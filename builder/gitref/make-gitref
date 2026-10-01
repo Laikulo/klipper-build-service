@@ -29,6 +29,7 @@ for project in "${!projects[@]}"; do
 done
 git repack -a -l -d
 git pack-refs --all
+git bundle create ../gitref.bundle --all
 tar -cvf ../gitref.git.tar --owner root:0 --group root:0 --format=ustar -- *
 cd ..
 image_hash="$(podman import gitref.git.tar)"
