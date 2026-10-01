@@ -1,6 +1,6 @@
 
 kbs_menuconfig: kbs_menuconfig.d/__main__.py .deps-installed.stamp
-	python3 -m zipapp -p python3 kbs_menuconfig.d --output $@
+	python3 -m zipapp -p /usr/bin/python3 kbs_menuconfig.d --output $@
 
 kbs_menuconfig.d:
 	mkdir $@
