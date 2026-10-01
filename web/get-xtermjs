@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -e
+
+cleanup() {
+	trap - ERR EXIT
+	set +e
+	if [[ "$tmpdir" && -d "$tmpdir" ]]; then
+		rm -rf "$tmpdir"
+	fi
+}
+
+trap cleanup ERR EXIT
+
+: "${1?Version required}" "${2?Destination required}"
+
+tmpdir="$(mktemp -d)"
+
+: "${tmpdir?tmpdir not created, mktemp missing}"
+
+pushd "$tmpdir"
+npm install --ignore-scripts --no-package-lock @xterm/xterm@"$1"
+basedir="$tmpdir/node_modules/@xterm/xterm"
+popd
+
+cp -rp "$basedir/css" "$basedir/lib" "$basedir/LICENSE" "$2"
