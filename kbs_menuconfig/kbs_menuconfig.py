@@ -131,7 +131,7 @@ def is_kalico(path):
 
 
 def launch_menuconfig(srctree: Optional[str], kconfig_path: str):
-    import menuconfig
+    from kconfiglib import menuconfig
 
     # menuconfig reads this from the environment, so we override it here
     os.environ["srctree"] = srctree
